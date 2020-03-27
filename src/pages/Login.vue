@@ -13,8 +13,8 @@
               flat
               round
               size="8px"
-              :class="isChangeLanguage != 'th' ? 'backdrop' : null"
-              @click="(isChangeLanguage = 'th'), changeLanguage('th')"
+              :class=" $i18n.locale != 'th-th' ? 'backdrop' : null"
+              @click="(isChangeLanguage = 'th-th'), changeLanguage('th-th')"
             >
               <q-img src="../statics/pic/Thai.png"></q-img>
             </q-btn>
@@ -24,7 +24,7 @@
               flat
               round
               size="8px"
-              :class="isChangeLanguage != 'en' ? 'backdrop' : null"
+              :class=" $i18n.locale != 'en-us' ? 'backdrop' : null"
               @click="(isChangeLanguage = 'en'), changeLanguage('en')"
             >
               <q-img src="../statics/pic/English.png"></q-img>
@@ -90,16 +90,17 @@ export default {
       if (type == "en") {
         type = "en-us";
       }
-      this.$i18n.locale = type;
-      this.$q.localStorage.set("Language", this.$i18n.locale);
+
+      this.$q.localStorage.set("Language", type);
+      this.$i18n.locale = this.$q.localStorage.getItem("Language");
     },
     login() {
       this.$router.push("schedule");
-      // this.$q.dialog({
-      //   title: this.$t("invalidPasswordTitle"),
-      //   message: this.$t("invalidPasswordContent")
-      // });
     }
+  },
+  mounted() {
+    console.log("XXXXXXX");
+    console.log(this.$q.lang.getLocale());
   }
 };
 </script>
