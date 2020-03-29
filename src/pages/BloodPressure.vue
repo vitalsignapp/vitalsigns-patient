@@ -109,6 +109,11 @@ export default {
       this.$q.localStorage.set("systolic", this.systolic);
       this.$q.localStorage.set("diastolic", this.diastolic);
     }
+  },
+  mounted() {
+    if (!this.$q.localStorage.has("enableBackBtn")) {
+      this.$router.push("/schedule");
+    }
   }
 };
 </script>

@@ -74,6 +74,11 @@ export default {
       }
       this.$q.localStorage.set("heartRate", this.heartRate);
     }
+  },
+  mounted() {
+    if (!this.$q.localStorage.has("enableBackBtn")) {
+      this.$router.push("/schedule");
+    }
   }
 };
 </script>

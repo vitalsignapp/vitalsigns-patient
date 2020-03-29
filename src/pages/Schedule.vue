@@ -100,7 +100,14 @@
         </q-btn>
       </div>
       <div class="q-mt-xl">
-        <q-btn class="button-action" dense to="/temperature" :label="$t('schBtn')"></q-btn>
+        <q-btn
+          :disable="isDisableButton"
+          :class="isDisableButton ? 'disabledBtn' : 'button-action'"
+          dense
+          @click=" $q.localStorage.set('enableBackBtn',true);"
+          to="/temperature"
+          :label="$t('schBtn')"
+        ></q-btn>
       </div>
     </div>
   </div>
@@ -111,6 +118,7 @@ import { db } from "../router";
 export default {
   data() {
     return {
+      isDisableButton: true,
       scheduleList: [
         {
           time: "02:00",
@@ -186,6 +194,12 @@ export default {
             dataTemp.push(Number(element.data().inputRound));
           });
           this.patientLogData = dataTemp;
+
+          if (dataTemp.includes(this.currentTime)) {
+            this.isDisableButton = true;
+          } else {
+            this.isDisableButton = false;
+          }
           this.loadingHide();
         });
     }
@@ -199,15 +213,8 @@ export default {
     this.getCurrentDate();
     this.$q.localStorage.set("isForward", true);
     this.$q.localStorage.set("isBack", false);
-    window.onpopstate = function(event) {
-      console.log(
-        "location: " +
-          document.location +
-          ", state: " +
-          JSON.stringify(event.state)
-      );
-      console.log("ต้องการออกจากระบบใช่หรือไม่ ?");
-    };
+    let _this = this;
+    let logoutTitle = this.$t("logoutTitle");
     this.$q.localStorage.remove("temperature");
     this.$q.localStorage.remove("oxygen");
     this.$q.localStorage.remove("symptoms");
@@ -219,4 +226,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.disabledBtn {
+  padding: 2px 16px;
+  font-family: Sarabun-Medium;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: #e0e0e0;
+  color: #9e9e9e;
+}
+</style>

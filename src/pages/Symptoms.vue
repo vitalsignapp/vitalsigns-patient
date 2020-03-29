@@ -70,6 +70,11 @@ export default {
       this.$q.localStorage.set("symptoms", this.symptoms);
       this.$router.push("/validation");
     }
+  },
+  mounted() {
+    if (!this.$q.localStorage.has("enableBackBtn")) {
+      this.$router.push("/schedule");
+    }
   }
 };
 </script>

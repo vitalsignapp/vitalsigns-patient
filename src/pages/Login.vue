@@ -92,25 +92,31 @@ export default {
       if (type == "en") {
         type = "en-us";
       }
-
       this.$q.localStorage.set("Language", type);
       this.$i18n.locale = this.$q.localStorage.getItem("Language");
     },
     login() {
+      this.loadingShow();
       db.collection("patientData")
         .where("NH", "==", this.username)
         .get()
         .then(doc => {
           if (doc.size) {
-            // TODO : เข้ารหัสข้อมูลผู้ป่วย
             let mergeData = {
               ...doc.docs[0].data(),
               ...{ key: doc.docs[0].id }
             };
-            console.log(mergeData);
             let encryptData = this.encrypt(mergeData, 1);
             this.$q.localStorage.set("data", encryptData);
             this.$router.push("schedule");
+            this.loadingHide();
+          } else {
+            this.loadingHide();
+            this.$q.dialog({
+              title: this.$t("invalidPasswordTitle"),
+              message: this.$t("invalidPasswordContent"),
+              ok: { color: "orange-5", textColor: "black" }
+            });
           }
         });
     }

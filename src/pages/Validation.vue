@@ -43,22 +43,24 @@
           </div>
         </div>
 
-        <div v-if="$q.localStorage.getItem('symptomsCheck').filter(x => x.status).length">
-          <div align="center" class="font-body color-dark-gray q-pb-sm">
-            <span>{{ $t('conSymHeader') }}</span>
-          </div>
-          <div class="q-pb-md">
-            <q-separator></q-separator>
-          </div>
+        <div v-if="$q.localStorage.getItem('enableBackBtn')">
+          <div v-if="$q.localStorage.getItem('symptomsCheck').filter(x => x.status).length">
+            <div align="center" class="font-body color-dark-gray q-pb-sm">
+              <span>{{ $t('conSymHeader') }}</span>
+            </div>
+            <div class="q-pb-md">
+              <q-separator></q-separator>
+            </div>
 
-          <div class="font-body">
-            <ul>
-              <li
-                class="q-pa-xs"
-                v-for="(items,index) in $q.localStorage.getItem('symptomsCheck').filter(x => x.status)"
-                :key="index"
-              >{{ items.sym }}</li>
-            </ul>
+            <div class="font-body">
+              <ul>
+                <li
+                  class="q-pa-xs"
+                  v-for="(items,index) in $q.localStorage.getItem('symptomsCheck').filter(x => x.status)"
+                  :key="index"
+                >{{ items.sym }}</li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -74,6 +76,7 @@
 
 <script>
 import AppBar from "../components/AppBar";
+import { db } from "../router";
 export default {
   components: {
     AppBar
@@ -81,19 +84,50 @@ export default {
   data() {
     return {
       isForward: this.$q.localStorage.getItem("isForward"),
-      isBack: this.$q.localStorage.getItem("isBack")
+      isBack: this.$q.localStorage.getItem("isBack"),
+      patientData: this.decrypt(this.$q.localStorage.getItem("data"), 1)
     };
   },
   methods: {
-    saveData() {
-      this.$q.localStorage.remove("temperature");
-      this.$q.localStorage.remove("oxygen");
-      this.$q.localStorage.remove("symptoms");
-      this.$q.localStorage.remove("heartRate");
-      this.$q.localStorage.remove("diastolic");
-      this.$q.localStorage.remove("systolic");
-      this.$q.localStorage.remove("symptomsCheck");
-      this.$router.push("/thankyou");
+    async saveData() {
+      this.loadingShow();
+      let date = await this.getDate();
+      let finalData = {
+        temperature: this.$q.localStorage.getItem("temperature"),
+        bloodPressure:
+          this.$q.localStorage.getItem("systolic") +
+          "/" +
+          this.$q.localStorage.getItem("diastolic"),
+        oxygen: this.$q.localStorage.getItem("oxygen"),
+        heartRate: this.$q.localStorage.getItem("heartRate"),
+        symptomsCheck: this.$q.localStorage.getItem("symptomsCheck"),
+        otherSymptoms: this.$q.localStorage.getItem("symptoms"),
+        inputRound: new Date().getHours(),
+        inputDate: date.date + "/" + date.month + "/" + date.year,
+        patientKey: this.patientData.key,
+        patientRoomKey: this.patientData.patientRoomKey,
+        hospitalKey: this.patientData.hospitalKey
+      };
+
+      db.collection("patientLog")
+        .add(finalData)
+        .then(() => {
+          this.$q.localStorage.remove("temperature");
+          this.$q.localStorage.remove("oxygen");
+          this.$q.localStorage.remove("symptoms");
+          this.$q.localStorage.remove("heartRate");
+          this.$q.localStorage.remove("diastolic");
+          this.$q.localStorage.remove("systolic");
+          this.$q.localStorage.remove("symptomsCheck");
+          this.$q.localStorage.remove("enableBackBtn");
+          this.loadingHide();
+          this.$router.push("/thankyou");
+        });
+    }
+  },
+  mounted() {
+    if (!this.$q.localStorage.has("enableBackBtn")) {
+      this.$router.push("/schedule");
     }
   }
 };

@@ -83,6 +83,11 @@ export default {
       this.$q.localStorage.set("symptomsCheck", this.symptomsArr);
       this.$router.push("/symptoms");
     }
+  },
+  mounted() {
+    if (!this.$q.localStorage.has("enableBackBtn")) {
+      this.$router.push("/schedule");
+    }
   }
 };
 </script>

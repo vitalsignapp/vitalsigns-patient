@@ -76,6 +76,11 @@ export default {
     saveOxygenToLocal() {
       this.$q.localStorage.set("oxygen", this.oxygen);
     }
+  },
+  mounted() {
+    if (!this.$q.localStorage.has("enableBackBtn")) {
+      this.$router.push("/schedule");
+    }
   }
 };
 </script>

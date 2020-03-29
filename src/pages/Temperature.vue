@@ -7,7 +7,7 @@
       leave-active-class="animated fadeOut"
       style="overflow:hidden;"
     >
-      <div style="padding-top:70px">
+      <div>
         <div align="center" class="font-h3" style="padding-top:30px;padding-bottom:60px">
           <span>{{$t('tempHeader')}}</span>
         </div>
@@ -70,6 +70,11 @@ export default {
         this.saveTempToLocal();
         this.$router.push("/oxygen");
       }
+    }
+  },
+  mounted() {
+    if (!this.$q.localStorage.has("enableBackBtn")) {
+      this.$router.push("/schedule");
     }
   }
 };
