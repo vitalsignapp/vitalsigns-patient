@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
 import routes from "./routes";
-
 Vue.use(VueRouter);
+import VueCryptojs from 'vue-cryptojs'
+Vue.use(VueCryptojs)
 
 /*
  * If not building with SSR mode, you can
@@ -37,116 +37,45 @@ Vue.mixin({
       currentStep: 1,
       totalStep: 7,
       version: "0.001",
-      en: {
-        step: "Step",
-        next: "Next",
-        skip: "Skip",
-        confirmation: "Confirmation",
-        // LOGIN
-        login: "Login",
-        about: "About VitalSign",
-        loginHeader: "Enter Hospital Number ()",
-        loginPlaceholder: "1234ddmmyy",
-        // schedule
-        signout: "Log Out",
-        schHeader: "Daily Self-Check Routine",
-        schChecked: "Checked",
-        schHavenotCheck: "Have not checked",
-        schWaitForCheck: "Wait for checking",
-        schBtn: "Start self-check",
-        dateOfBirth: "Date of birth",
-        // temperature
-        tempHeader: "Enter Body Temperature",
-        // oxygen
-        oxygenHeader: "Enter Respiration Rate",
-        // bloodPresure
-        bloodHeader: "Enter Blood Pressure",
-        higher: "Higher (Systolic)",
-        lower: "Lower (Diastolic)",
-        // heart rate
-        heartHeader: "Enter Pulse Rate",
-        // symptomcheck
-        symHeader: "How are you feeling?",
-        emergency: "In case off emergency, please contact a staff.",
-        // symptoms
-        symOtherHeader: "Do you have other symptoms?",
-        // confirmation
-        conTemp: "Body temperature",
-        conBlood: "Blood pressure",
-        conRes: "Respiration rate",
-        conPulse: "Pulse rate",
-        conSymHeader: "Current Conditions",
-        fever: "Fever",
-        normal: "Normal",
-        conSendData: "Send Details",
-        //Thankyou
-        thankHeader: "Thank you for corporation!",
-        thankBody: "Your details have been sent to our staff. Get well soon!",
-        backToHome: "back to home",
-        feedback: "Send your feedback to us"
-
-
-
-
-      },
-      th: {
-        step: "ขั้นที่",
-        next: "ถัดไป",
-        skip: "ข้าม",
-        confirmation: "ตรวจสอบข้อมูล",
-        // LOGIN
-        login: "เข้าใช้งาน",
-        about: "เกี่ยวกับ VitalSign",
-        loginHeader: "ใส่รหัสผู้ป่วยที่ได้รับจากพบาบาล",
-        loginPlaceholder: "1234 วัน/เดือน/ปี",
-        // schedule
-        signout: "ออกจากระบบ",
-        schHeader: "ตารางตรวจประจำวัน",
-        schChecked: "ตรวจแล้ว",
-        schHavenotCheck: "ยังไม่ได้ตรวจ",
-        schWaitForCheck: "รอตรวจ",
-        schBtn: "เริ่มตรวจตัวเอง",
-        dateOfBirth: "วันเกิด",
-        // temperature
-        tempHeader: "กรอกอุณภูมิร่างกาย",
-        // oxygen
-        oxygenHeader: "กรอกค่าออกซิเจนในเลือด",
-        // bloodPresure
-        bloodHeader: "กรอกค่าความดันเลือด",
-        higher: "ค่าบน (Systolic)",
-        lower: "ค่าล่าง (Diastolic)",
-        // heart rate
-        heartHeader: "กรอกค่าอัตราการเต้นของหัวใจ",
-        // symptomcheck
-        symHeader: "ตอนนี้คุณมีอาการอะไรบ้าง",
-        emergency: "กรณีฉุกเฉิน สามารถติดต่อพยาบาลได้",
-        // symptoms
-        symOtherHeader: "อาการอื่นๆ ที่อยากให้พยาบาลรู้",
-        // confirmation
-        conTemp: "อุณหภูมิ",
-        conBlood: "ความดันโลหิต",
-        conRes: "ออกซิเจนในเลือด",
-        conPulse: "การเต้นของหัวใจ",
-        conSymHeader: "อาการตอนนี้",
-        fever: "มีไข้",
-        normal: "ปกติ",
-        conSendData: "ส่งข้อมูล",
-        //Thankyou
-        thankHeader: "ขอบคุณที่ให้ความร่วมมือ",
-        thankBody: "ข้อมูลได้ส่งถึงมือพยาบาลแล้วขอให้ คุณหายไวๆ นะคะ ",
-        backToHome: "กลับหน้าหลัก",
-        feedback: "ส่งความคิดเห็นถึงทีมพัฒนา"
-
-
-
-      },
     };
   },
   methods: {
-    nextPage() {
-      this.currentStep++;
-      this.panel = "step" + this.currentStep;
-    }
+    encrypt(data, type) {
+      // ฟังก์ชันการเข้ารหัส AES
+      // type 1.OBJ 2.String / boolean / number
+      let result
+      if (type == 1) {
+        // object TYPE
+        result = this.CryptoJS.AES.encrypt(JSON.stringify(data), "chomart12").toString()
+      } else if (type == 2) {
+        // STRING TYPE
+        data = data.toString()
+        result = this.CryptoJS.AES.encrypt(data, "chomart12").toString()
+      }
+      return result
+    },
+    decrypt(data, type) {
+      // ฟังก์ชันการถอดรหัส AES
+      // type 1.OBJ 2.String 3.Number 4.boolean
+      if (!data) {
+        return data
+      }
+      let result = this.CryptoJS.AES.decrypt(data, "chomart12").toString(
+        this.CryptoJS.enc.Utf8
+      );
+      if (type == 1) {
+        // object type
+        // แปลงJSON กลับ
+        result = JSON.parse(result.toString(this.CryptoJS.enc.Utf8));
+      } else if (type == 3) {
+        // number type
+        result = Number(result)
+      } else if (type == 4) {
+        // JSON TYPE
+        result = JSON.parse(result)
+      }
+      return result
+    },
   }
 });
 

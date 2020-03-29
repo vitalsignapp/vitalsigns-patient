@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-toolbar class="bg-teal text-white shadow-1 font-h3">
+    <q-toolbar class="bg-teal text-white shadow-1 font-h3 fixed">
       <q-toolbar-title>
         <q-btn dense flat class="cursor-pointer" @click="previousStep()" icon="arrow_back_ios"></q-btn>
         <span v-if="step != 7">

@@ -5,9 +5,9 @@
       appear
       :enter-active-class="isBack ? 'animated slideInLeft' : 'animated slideInRight' "
       leave-active-class="animated fadeOut"
-      style="overflow:hidden"
+      style="overflow:hidden;"
     >
-      <div>
+      <div style="padding-top:70px">
         <div align="center" class="font-h3" style="padding-top:30px;padding-bottom:60px">
           <span>{{$t('tempHeader')}}</span>
         </div>

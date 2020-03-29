@@ -56,6 +56,7 @@
             outlined
             autofocus
             v-model="username"
+            @keyup.enter="login()"
             style="max-width:350px;width:90%;"
           ></q-input>
         </div>
@@ -75,6 +76,7 @@
 </template>
 
 <script>
+import { db } from "../router";
 export default {
   name: "PageIndex",
   data() {
@@ -95,12 +97,18 @@ export default {
       this.$i18n.locale = this.$q.localStorage.getItem("Language");
     },
     login() {
-      this.$router.push("schedule");
+      db.collection("patientData")
+        .where("NH", "==", this.username)
+        .get()
+        .then(doc => {
+          if (doc.size) {
+            // TODO : เข้ารหัสข้อมูลผู้ป่วย
+            let encryptData = this.encrypt(doc.docs[0].data(), 1);
+            this.$q.localStorage.set("data", encryptData);
+            this.$router.push("schedule");
+          }
+        });
     }
-  },
-  mounted() {
-    console.log("XXXXXXX");
-    console.log(this.$q.lang.getLocale());
   }
 };
 </script>

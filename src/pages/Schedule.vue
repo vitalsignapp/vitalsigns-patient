@@ -8,7 +8,7 @@
         </q-btn>
       </div>
       <div class="q-mb-sm full-width color-white">
-        <span class="font-h2">สมชาย มากบุตร</span>
+        <span class="font-h2">{{ patientData.name }} {{ patientData.surname }}</span>
         <br />
         <span class="font-body">
           <span class="font-body color-white">{{ $t('dateOfBirth') }}</span>
@@ -111,7 +111,8 @@ export default {
           start: false,
           success: false
         }
-      ]
+      ],
+      patientData: this.decrypt(this.$q.localStorage.getItem("data"), 1)
     };
   },
   methods: {
@@ -139,10 +140,8 @@ export default {
       let hours = new Date().getHours();
       let minutes = new Date().getMinutes();
       let seconds = new Date().getSeconds();
-
       hours = hours > 9 ? hours : "0" + hours;
       minutes = minutes > 9 ? minutes : "0" + minutes;
-
       this.currentTime = hours + ":" + minutes;
     }, 1000);
 
@@ -155,7 +154,6 @@ export default {
           ", state: " +
           JSON.stringify(event.state)
       );
-
       console.log("ต้องการออกจากระบบใช่หรือไม่ ?");
     };
     this.$q.localStorage.remove("temperature");
