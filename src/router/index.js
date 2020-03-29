@@ -1,8 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import routes from "./routes";
-Vue.use(VueRouter);
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import VueCryptojs from 'vue-cryptojs'
+Vue.use(VueRouter);
+Vue.use(VueAxios, axios)
 Vue.use(VueCryptojs)
 
 /*
@@ -40,6 +43,27 @@ Vue.mixin({
     };
   },
   methods: {
+    async getDate() {
+      let apiLink = "https://api.winner-english.com/data/api/gettime.php";
+      const res = await axios.get(apiLink);
+      let currentDate = res.data[0].date.split("/")[0];
+      let currentMonth = res.data[0].date.split("/")[1];
+      let currentYear = Number(res.data[0].date.split("/")[2]) + Number(543);
+      let result = {
+        date: currentDate,
+        month: currentMonth,
+        year: currentYear
+      }
+      return result
+    },
+    loadingShow() {
+      this.$q.loading.show({
+        delay: 400
+      })
+    },
+    loadingHide() {
+      this.$q.loading.hide()
+    },
     encrypt(data, type) {
       // ฟังก์ชันการเข้ารหัส AES
       // type 1.OBJ 2.String / boolean / number
@@ -76,6 +100,66 @@ Vue.mixin({
       }
       return result
     },
+    showMonthName(index) {
+      console.log(this.$i18n.locale);
+      let m = Number(index)
+      let month
+      if (this.$i18n.locale != 'th-th') {
+        if (m == 1) {
+          month = "January";
+        } else if (m == 2) {
+          month = "February";
+        } else if (m == 3) {
+          month = "March";
+        } else if (m == 4) {
+          month = "April";
+        } else if (m == 5) {
+          month = "May";
+        } else if (m == 6) {
+          month = "June";
+        } else if (m == 7) {
+          month = "July";
+        } else if (m == 8) {
+          month = "August";
+        } else if (m == 9) {
+          month = "September";
+        } else if (m == 10) {
+          month = "October";
+        } else if (m == 11) {
+          month = "November";
+        } else if (m == 12) {
+          month = "December";
+        }
+      } else {
+        if (m == 1) {
+          month = "มกราคม";
+        } else if (m == 2) {
+          month = "กุมภาพันธ์";
+        } else if (m == 3) {
+          month = "มีนาคม";
+        } else if (m == 4) {
+          month = "เมษายน";
+        } else if (m == 5) {
+          month = "พฤษภาคม";
+        } else if (m == 6) {
+          month = "มิถุนายน";
+        } else if (m == 7) {
+          month = "กรกฎาคม";
+        } else if (m == 8) {
+          month = "สิงหาคม";
+        } else if (m == 9) {
+          month = "กันยายน";
+        } else if (m == 10) {
+          month = "ตุลาคม";
+        } else if (m == 11) {
+          month = "พฤศจิกายน";
+        } else if (m == 12) {
+          month = "ธันวาคม";
+        }
+      }
+
+      return month
+    }
   }
 });
 

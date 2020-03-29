@@ -13,7 +13,7 @@
         <span class="font-body">
           <span class="font-body color-white">{{ $t('dateOfBirth') }}</span>
         </span>
-        xx/xx/xx
+        {{ patientData.dateOfBirth }}
       </div>
     </q-toolbar>
 
@@ -22,7 +22,9 @@
       <!-- TODO : Schedule Content -->
       <div class="q-mb-lg">
         <div class="q-mt-md">
-          <span class="font-h3">12 มีนาคม 2562</span>
+          <span
+            class="font-h3"
+          >{{ currentDate.date }} {{ showMonthName(currentDate.month) }} {{ currentDate.year }}</span>
         </div>
         <div class="q-my-sm">
           <span class="font-body">{{$t('schHeader')}}</span>
@@ -30,7 +32,7 @@
       </div>
 
       <div class="q-mt-lg" align="left" style="max-width:350px;width:90%;">
-        <q-btn
+        <!-- <q-btn
           no-caps
           :outline="item.start && !item.success ? true : null"
           :color="item.start && !item.success ? 'teal' : null"
@@ -65,9 +67,38 @@
               </span>
             </span>
           </div>
+        </q-btn>-->
+        <!-- :outline="items.status == 'waiting' ? true : null"
+          :flat="items.status != 'waiting' ? true : false"
+        :color="items.status == 'waiting' ? 'teal' : null"-->
+        <q-btn
+          no-caps
+          dense
+          class="font-body full-width q-pa-xs no-pointer-events"
+          v-for="(items,index) in scheduleList"
+          :key="index"
+          :outline="items.range.includes(currentTime) && !patientLogData.includes(items.round) ? true : false"
+          :color="items.range.includes(currentTime) && !patientLogData.includes(items.round) ? 'teal' : null"
+          :flat="!items.range.includes(currentTime) || patientLogData.includes(items.round)   ? true : false"
+        >
+          <div class="col-1 q-px-sm" style="width:70px;" align="left">
+            <span class="color-black">{{ items.time }}</span>
+          </div>
+          <div class="col q-px-sm" align="left">
+            <q-icon
+              v-if="items.range.includes(currentTime) && !patientLogData.includes(items.round)"
+              name="query_builder"
+              style="margin-right:3px;margin-left:-3px"
+            ></q-icon>
+            <span
+              v-if="items.range.includes(currentTime) && !patientLogData.includes(items.round)"
+            >รอตรวจ</span>
+            <span v-else-if="patientLogData.includes(items.round)">ตรวจแล้ว</span>
+            <span class="color-light-gray" v-else-if="currentTime > items.round">ไม่ได้ตรวจ</span>
+            <span class="color-light-gray" v-else>ยังไม่ถึงรอบตรวจ</span>
+          </div>
         </q-btn>
       </div>
-
       <div class="q-mt-xl">
         <q-btn class="button-action" dense to="/temperature" :label="$t('schBtn')"></q-btn>
       </div>
@@ -76,43 +107,45 @@
 </template>
 
 <script>
+import { db } from "../router";
 export default {
   data() {
     return {
-      currentTime: "",
       scheduleList: [
         {
           time: "02:00",
-          start: false,
-          success: true
+          range: [2, 3, 4, 5],
+          round: 2
         },
         {
           time: "06:00",
-          start: true,
-          success: false
+          range: [6, 7, 8, 9],
+          round: 6
         },
         {
           time: "10:00",
-          start: false,
-          success: false
+          range: [10, 11, 12, 13],
+          round: 10
         },
         {
           time: "14:00",
-          start: false,
-          success: false
+          range: [14, 15, 16, 17],
+          round: 14
         },
         {
           time: "18:00",
-          start: false,
-          success: false
+          range: [18, 19, 20, 21],
+          round: 18
         },
         {
           time: "22:00",
-          start: false,
-          success: false
+          range: [22, 23, 0, 1],
+          round: 22
         }
       ],
-      patientData: this.decrypt(this.$q.localStorage.getItem("data"), 1)
+      patientData: this.decrypt(this.$q.localStorage.getItem("data"), 1),
+      currentDate: "",
+      patientLogData: ""
     };
   },
   methods: {
@@ -128,23 +161,42 @@ export default {
           this.$q.localStorage.clear();
           this.$router.push("/");
         });
+    },
+    async getCurrentDate() {
+      this.loadingShow();
+      let date = await this.getDate();
+      this.currentDate = date;
+      this.loadPatientLogData();
+    },
+    loadPatientLogData() {
+      let date =
+        this.currentDate.date +
+        "/" +
+        this.currentDate.month +
+        "/" +
+        this.currentDate.year;
+
+      db.collection("patientLog")
+        .where("inputDate", "==", date)
+        .where("patientKey", "==", this.patientData.key)
+        .get()
+        .then(doc => {
+          let dataTemp = [];
+          doc.forEach(element => {
+            dataTemp.push(Number(element.data().inputRound));
+          });
+          this.patientLogData = dataTemp;
+          this.loadingHide();
+        });
     }
   },
   computed: {
-    checkTime() {
-      let getTime = new Date().getTime();
+    currentTime() {
+      return new Date().getHours();
     }
   },
   mounted() {
-    setInterval(() => {
-      let hours = new Date().getHours();
-      let minutes = new Date().getMinutes();
-      let seconds = new Date().getSeconds();
-      hours = hours > 9 ? hours : "0" + hours;
-      minutes = minutes > 9 ? minutes : "0" + minutes;
-      this.currentTime = hours + ":" + minutes;
-    }, 1000);
-
+    this.getCurrentDate();
     this.$q.localStorage.set("isForward", true);
     this.$q.localStorage.set("isBack", false);
     window.onpopstate = function(event) {

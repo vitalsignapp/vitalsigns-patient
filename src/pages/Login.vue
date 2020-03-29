@@ -103,7 +103,12 @@ export default {
         .then(doc => {
           if (doc.size) {
             // TODO : เข้ารหัสข้อมูลผู้ป่วย
-            let encryptData = this.encrypt(doc.docs[0].data(), 1);
+            let mergeData = {
+              ...doc.docs[0].data(),
+              ...{ key: doc.docs[0].id }
+            };
+            console.log(mergeData);
+            let encryptData = this.encrypt(mergeData, 1);
             this.$q.localStorage.set("data", encryptData);
             this.$router.push("schedule");
           }
