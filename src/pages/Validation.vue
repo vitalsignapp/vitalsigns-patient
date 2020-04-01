@@ -165,6 +165,12 @@ export default {
         microtime: date.microtime
       };
 
+      db.collection("patientData")
+        .doc(this.patientData.key)
+        .update({
+          isRead: false
+        });
+
       db.collection("patientLog")
         .where(
           "inputDate",
@@ -179,16 +185,23 @@ export default {
             db.collection("patientLog")
               .add(finalData)
               .then(() => {
-                this.$q.localStorage.remove("temperature");
-                this.$q.localStorage.remove("oxygen");
-                this.$q.localStorage.remove("symptoms");
-                this.$q.localStorage.remove("heartRate");
-                this.$q.localStorage.remove("diastolic");
-                this.$q.localStorage.remove("systolic");
-                this.$q.localStorage.remove("symptomsCheck");
-                this.$q.localStorage.remove("enableBackBtn");
-                this.loadingHide();
-                this.$router.push("/schedule");
+                db.collection("patientData")
+                  .doc(this.patientData.key)
+                  .update({
+                    isRead: false
+                  })
+                  .then(() => {
+                    this.$q.localStorage.remove("temperature");
+                    this.$q.localStorage.remove("oxygen");
+                    this.$q.localStorage.remove("symptoms");
+                    this.$q.localStorage.remove("heartRate");
+                    this.$q.localStorage.remove("diastolic");
+                    this.$q.localStorage.remove("systolic");
+                    this.$q.localStorage.remove("symptomsCheck");
+                    this.$q.localStorage.remove("enableBackBtn");
+                    this.loadingHide();
+                    this.$router.push("/schedule");
+                  });
               });
           }
         });
