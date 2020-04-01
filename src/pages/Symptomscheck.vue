@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-bar @nextClicked="saveSymptomsToLocal()" :step="5"></app-bar>
+    <app-bar @nextClicked="saveSymptomsToLocal()" :step="2"></app-bar>
     <transition
       appear
       :enter-active-class="isBack ? 'animated slideInLeft' : 'animated slideInRight' "
@@ -81,7 +81,7 @@ export default {
   methods: {
     saveSymptomsToLocal() {
       this.$q.localStorage.set("symptomsCheck", this.symptomsArr);
-      this.$router.push("/symptoms");
+      this.routeStep();
     }
   },
   mounted() {

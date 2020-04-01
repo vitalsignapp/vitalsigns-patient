@@ -98,16 +98,24 @@ export default {
     login() {
       this.loadingShow();
       db.collection("patientData")
-        .where("NH", "==", this.username)
+        .where("HN", "==", this.username)
         .get()
-        .then(doc => {
+        .then(async doc => {
           if (doc.size) {
             let mergeData = {
               ...doc.docs[0].data(),
               ...{ key: doc.docs[0].id }
             };
             let encryptData = this.encrypt(mergeData, 1);
+            // GET HOSPITAL DATA CONFIG
+            let hospitalData = await db
+              .collection("hospital")
+              .doc(doc.docs[0].data().hospitalKey)
+              .get();
+
+            this.$q.localStorage.set("config", hospitalData.data());
             this.$q.localStorage.set("data", encryptData);
+            this.$q.localStorage.set("enableBackBtn", true);
             this.$router.push("schedule");
             this.loadingHide();
           } else {

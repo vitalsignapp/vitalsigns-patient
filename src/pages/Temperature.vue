@@ -52,7 +52,10 @@ export default {
       isBack: this.$q.localStorage.getItem("isBack"),
       temperature: this.$q.localStorage.has("temperature")
         ? this.$q.localStorage.getItem("temperature")
-        : ""
+        : "",
+      configData: this.$q.localStorage
+        .getItem("config")
+        .vitalSignsConfig.filter(x => x.status)
     };
   },
   methods: {
@@ -68,7 +71,7 @@ export default {
         });
       } else {
         this.saveTempToLocal();
-        this.$router.push("/oxygen");
+        this.routeStep();
       }
     }
   },

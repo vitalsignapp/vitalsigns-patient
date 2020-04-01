@@ -70,7 +70,7 @@ export default {
         });
       } else {
         this.saveOxygenToLocal();
-        this.$router.push("/bloodpressure");
+        this.routeStep();
       }
     },
     saveOxygenToLocal() {

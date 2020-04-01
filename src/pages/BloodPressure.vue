@@ -99,7 +99,8 @@ export default {
         });
       } else {
         this.save();
-        this.$router.push("/heartrate");
+        // this.$router.push("/heartrate");
+        this.routeStep();
       }
     },
     save() {

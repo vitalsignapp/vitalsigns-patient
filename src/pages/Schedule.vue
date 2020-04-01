@@ -32,45 +32,6 @@
       </div>
 
       <div class="q-mt-lg" align="left" style="max-width:350px;width:90%;">
-        <!-- <q-btn
-          no-caps
-          :outline="item.start && !item.success ? true : null"
-          :color="item.start && !item.success ? 'teal' : null"
-          :flat="!item.start ? true : null"
-          dense
-          :class="item.start && !item.success ? 'bg-white' : null"
-          class="font-body full-width q-pa-xs no-pointer-events"
-          v-for="(item, index) in scheduleList"
-          :key="index"
-          style="padding-bottom:8px"
-        >
-          <div class="col-1 q-px-sm" style="width:70px;" align="left">
-            <span class="color-black">{{ item.time }}</span>
-          </div>
-          <div class="col q-px-sm" align="left">
-            <q-icon
-              name="query_builder"
-              v-if="item.start"
-              style="margin-right:3px;margin-left:-3px"
-            ></q-icon>
-            <span
-              :class="
-                item.success
-                  ? 'color-black'
-                  : item.start && !item.success
-                  ? ''
-                  : 'color-light-gray'
-              "
-            >
-              <span>
-                <span>{{ !item.success ? $t('schWaitForCheck') : $t('schChecked') }}</span>
-              </span>
-            </span>
-          </div>
-        </q-btn>-->
-        <!-- :outline="items.status == 'waiting' ? true : null"
-          :flat="items.status != 'waiting' ? true : false"
-        :color="items.status == 'waiting' ? 'teal' : null"-->
         <q-btn
           no-caps
           dense
@@ -104,8 +65,7 @@
           :disable="isDisableButton"
           :class="isDisableButton ? 'disabledBtn' : 'button-action'"
           dense
-          @click=" $q.localStorage.set('enableBackBtn',true);"
-          to="/temperature"
+          @click=" $q.localStorage.set('enableBackBtn',true),startSelfChecking()"
           :label="$t('schBtn')"
         ></q-btn>
       </div>
@@ -153,10 +113,16 @@ export default {
       ],
       patientData: this.decrypt(this.$q.localStorage.getItem("data"), 1),
       currentDate: "",
-      patientLogData: ""
+      patientLogData: "",
+      config: this.$q.localStorage
+        .getItem("config")
+        .vitalSignsConfig.filter(x => x.status)
     };
   },
   methods: {
+    startSelfChecking() {
+      this.routeStep();
+    },
     logout() {
       this.$q
         .dialog({
@@ -193,13 +159,31 @@ export default {
           doc.forEach(element => {
             dataTemp.push(Number(element.data().inputRound));
           });
+          dataTemp = dataTemp.sort((a, b) => a - b);
           this.patientLogData = dataTemp;
 
-          if (dataTemp.includes(this.currentTime)) {
+          let currentHours = new Date().getHours();
+          let currentRound;
+          if (currentHours >= 2 && currentHours < 6) {
+            currentRound = 2;
+          } else if (currentHours >= 6 && currentHours < 10) {
+            currentRound = 6;
+          } else if (currentHours >= 10 && currentHours < 14) {
+            currentRound = 10;
+          } else if (currentHours >= 14 && currentHours < 18) {
+            currentRound = 14;
+          } else if (currentHours >= 18 && currentHours < 22) {
+            currentRound = 18;
+          } else {
+            currentRound = 22;
+          }
+
+          if (dataTemp.includes(currentRound)) {
             this.isDisableButton = true;
           } else {
             this.isDisableButton = false;
           }
+
           this.loadingHide();
         });
     }
@@ -210,6 +194,7 @@ export default {
     }
   },
   mounted() {
+    this.$q.localStorage.set("currentStep", 0);
     this.getCurrentDate();
     this.$q.localStorage.set("isForward", true);
     this.$q.localStorage.set("isBack", false);

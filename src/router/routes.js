@@ -34,7 +34,8 @@ const routes = [{
     component: () => import('pages/Symptomscheck.vue')
   }, {
     path: '/validation',
-    component: () => import('pages/Validation.vue')
+    component: () => import('pages/Validation.vue'),
+    name: "validation"
   }
 ]
 

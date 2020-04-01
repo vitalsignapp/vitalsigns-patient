@@ -100,8 +100,34 @@ Vue.mixin({
       }
       return result
     },
+    routeStep() {
+      this.$q.localStorage.set("isBack", false);
+      this.$q.localStorage.set("isForward", true);
+      let currentStep = this.$q.localStorage.getItem("currentStep")
+      let config = this.$q.localStorage.getItem("config").vitalSignsConfig.filter(x => x.status)
+      let totalStep = config.length
+      let nextStep = currentStep == totalStep ? 'otherSymptoms' : config[currentStep].sym
+      if (nextStep === "อุณหภูมิร่างกาย") {
+        this.$router.push("/temperature")
+      } else if (nextStep === "ค่าออกซิเจนในเลือด") {
+        this.$router.push("oxygen")
+      } else if (nextStep === "ค่าความดันเลือด") {
+        this.$router.push("bloodpressure")
+      } else if (nextStep === "อัตราการเต้นของหัวใจ") {
+        this.$router.push("heartrate")
+      } else if (nextStep === "อาการตอนนี้") {
+        this.$router.push("symptomscheck")
+      } else {
+        this.$router.push("symptoms")
+      }
+
+      if (this.currentStep != totalStep + 1) {
+        this.$q.localStorage.set("currentStep", currentStep + 1)
+      }
+
+
+    },
     showMonthName(index) {
-      console.log(this.$i18n.locale);
       let m = Number(index)
       let month
       if (this.$i18n.locale != 'th-th') {

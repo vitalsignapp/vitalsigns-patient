@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-bar :step="7"></app-bar>
+    <app-bar :step="4"></app-bar>
 
     <transition
       appear
@@ -10,7 +10,7 @@
       <div style="max-width:450px;width:100%;margin:auto">
         <div align="center" class="font-h3 q-pa-md">นาย สมชาย มากบุตร</div>
 
-        <div align="center" class="font-body color-dark-gray">12 มีนาคม 2563 ณ 15.00 น.</div>
+        <div align="center" class="font-body color-dark-gray">{{ new Date()}}</div>
 
         <div class="q-pt-sm q-pb-md">
           <q-separator></q-separator>
@@ -23,46 +23,73 @@
             </div>
             <div class="col-3" align="right">{{ $q.localStorage.getItem("temperature") }} &#176;C</div>
 
-            <div class="col-9 textoverflow" align="left">
+            <div class="col-9 textoverflow" align="left" v-show="$q.localStorage.has('diastolic')">
               <span>{{ $t('conBlood') }}</span>
             </div>
             <div
+              v-show="$q.localStorage.has('diastolic')"
               class="col-3"
               align="right"
             >{{ $q.localStorage.getItem("systolic") }} / {{ $q.localStorage.getItem("diastolic") }}</div>
 
-            <div class="col-9 textoverflow" align="left">
+            <div class="col-9 textoverflow" align="left" v-show="$q.localStorage.has('oxygen')">
               <span>{{ $t('conRes') }}</span>
             </div>
-            <div class="col-3" align="right">{{ $q.localStorage.getItem("oxygen") }}%</div>
+            <div
+              v-show="$q.localStorage.has('oxygen')"
+              class="col-3"
+              align="right"
+            >{{ $q.localStorage.getItem("oxygen") }}%</div>
 
-            <div class="col-9 textoverflow" align="left">
+            <div class="col-9 textoverflow" align="left" v-show="$q.localStorage.has('heartRate')">
               <span>{{ $t('conPulse') }}</span>
             </div>
-            <div class="col-3" align="right">{{ $q.localStorage.getItem("heartRate") }}/min</div>
+            <div
+              class="col-3"
+              v-show="$q.localStorage.has('heartRate')"
+              align="right"
+            >{{ $q.localStorage.getItem("heartRate") }}/min</div>
           </div>
         </div>
 
-        <div v-if="$q.localStorage.getItem('enableBackBtn')">
-          <div v-if="$q.localStorage.getItem('symptomsCheck').filter(x => x.status).length">
-            <div align="center" class="font-body color-dark-gray q-pb-sm">
-              <span>{{ $t('conSymHeader') }}</span>
-            </div>
-            <div class="q-pb-md">
-              <q-separator></q-separator>
-            </div>
+        <span v-if="$q.localStorage.has('symptomsCheck')">
+          <div v-if="$q.localStorage.getItem('enableBackBtn')">
+            <div v-if="$q.localStorage.getItem('symptomsCheck').filter(x => x.status).length">
+              <div align="center" class="font-body color-dark-gray q-pb-sm">
+                <span>{{ $t('conSymHeader') }}</span>
+              </div>
+              <div class="q-pb-md">
+                <q-separator></q-separator>
+              </div>
 
-            <div class="font-body">
-              <ul>
-                <li
-                  class="q-pa-xs"
-                  v-for="(items,index) in $q.localStorage.getItem('symptomsCheck').filter(x => x.status)"
-                  :key="index"
-                >{{ items.sym }}</li>
-              </ul>
+              <div class="font-body">
+                <ul>
+                  <li
+                    class="q-pa-xs"
+                    v-for="(items,index) in $q.localStorage.getItem('symptomsCheck').filter(x => x.status)"
+                    :key="index"
+                  >{{ items.sym }}</li>
+                  <li
+                    class="q-pa-xs"
+                    v-if="this.$q.localStorage.getItem('symptoms') != ''"
+                  >อื่นๆ: {{ this.$q.localStorage.getItem("symptoms") }}</li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
+        </span>
+
+        <!-- กรณีโรงพยาบาลไม่เปิด ระบบ Check แต่มีการกรอกอาการอื่นๆ -->
+        <span
+          v-if="$q.localStorage.has('symptoms') && $q.localStorage.has('symptomsCheck') == false"
+        >
+          <ul>
+            <li
+              class="q-pa-xs"
+              v-if="this.$q.localStorage.getItem('symptoms') != ''"
+            >อื่นๆ: {{ this.$q.localStorage.getItem("symptoms") }}</li>
+          </ul>
+        </span>
 
         <div align="center">
           <q-btn dense class="button-action" @click="saveData()">
@@ -91,6 +118,22 @@ export default {
   methods: {
     async saveData() {
       this.loadingShow();
+
+      let currentHours = new Date().getHours();
+      let currentRound;
+      if (currentHours >= 2 && currentHours < 6) {
+        currentRound = 2;
+      } else if (currentHours >= 6 && currentHours < 10) {
+        currentRound = 6;
+      } else if (currentHours >= 10 && currentHours < 14) {
+        currentRound = 10;
+      } else if (currentHours >= 14 && currentHours < 18) {
+        currentRound = 14;
+      } else if (currentHours >= 18 && currentHours < 22) {
+        currentRound = 18;
+      } else {
+        currentRound = 22;
+      }
       let date = await this.getDate();
       let finalData = {
         temperature: this.$q.localStorage.getItem("temperature"),
@@ -102,7 +145,7 @@ export default {
         heartRate: this.$q.localStorage.getItem("heartRate"),
         symptomsCheck: this.$q.localStorage.getItem("symptomsCheck"),
         otherSymptoms: this.$q.localStorage.getItem("symptoms"),
-        inputRound: new Date().getHours(),
+        inputRound: currentRound,
         inputDate: date.date + "/" + date.month + "/" + date.year,
         patientKey: this.patientData.key,
         patientRoomKey: this.patientData.patientRoomKey,
@@ -121,7 +164,7 @@ export default {
           this.$q.localStorage.remove("symptomsCheck");
           this.$q.localStorage.remove("enableBackBtn");
           this.loadingHide();
-          this.$router.push("/thankyou");
+          this.$router.push("/schedule");
         });
     }
   },

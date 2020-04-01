@@ -64,8 +64,7 @@ export default {
         });
       } else {
         this.saveHeartRate();
-
-        this.$router.push("/symptomscheck");
+        this.routeStep();
       }
     },
     saveHeartRate() {

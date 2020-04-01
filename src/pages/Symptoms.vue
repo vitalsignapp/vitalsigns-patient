@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-bar @nextClicked="saveSymptoms()" :step="6"></app-bar>
+    <app-bar @nextClicked="saveSymptoms()" :step="3"></app-bar>
 
     <transition
       appear
