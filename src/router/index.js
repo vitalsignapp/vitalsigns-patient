@@ -52,7 +52,8 @@ Vue.mixin({
       let result = {
         date: currentDate,
         month: currentMonth,
-        year: currentYear
+        year: currentYear,
+        microtime: res.data[0].microtime
       }
       return result
     },

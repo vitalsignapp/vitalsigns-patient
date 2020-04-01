@@ -60,7 +60,7 @@
           </div>
         </q-btn>
       </div>
-      <div class="q-mt-xl">
+      <div class="q-mt-md">
         <q-btn
           :disable="isDisableButton"
           :class="isDisableButton ? 'disabledBtn' : 'button-action'"

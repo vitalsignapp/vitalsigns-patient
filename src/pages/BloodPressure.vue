@@ -7,7 +7,7 @@
       :enter-active-class="isBack ? 'animated slideInLeft' : 'animated slideInRight' "
       leave-active-class="animated fadeOut"
     >
-      <div style="max-width:450px;width:100%;margin:auto">
+      <div style="max-width:450px;width:100%;margin:auto;">
         <div align="center" class="font-h3" style="padding-top:30px;padding-bottom:60px">
           <span>{{$t('bloodHeader')}}</span>
         </div>

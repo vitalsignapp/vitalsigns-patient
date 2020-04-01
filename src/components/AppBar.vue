@@ -12,7 +12,7 @@
         </span>
       </q-toolbar-title>
       <q-space />
-      <q-btn no-caps @click="nextStep()" flat dense>
+      <q-btn no-caps @click="nextStep()" flat dense v-show="$route.name != 'validation'">
         <span class="color-white font-h3">{{ $t('next') }}</span>
       </q-btn>
     </q-toolbar>

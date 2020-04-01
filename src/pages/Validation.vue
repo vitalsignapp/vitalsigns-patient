@@ -10,7 +10,10 @@
       <div style="max-width:450px;width:100%;margin:auto">
         <div align="center" class="font-h3 q-pa-md">นาย สมชาย มากบุตร</div>
 
-        <div align="center" class="font-body color-dark-gray">{{ new Date()}}</div>
+        <div
+          align="center"
+          class="font-body color-dark-gray"
+        >{{ currentDate.date}} {{ showMonthName(currentDate.month) }} {{ currentDate.year }}</div>
 
         <div class="q-pt-sm q-pb-md">
           <q-separator></q-separator>
@@ -18,10 +21,18 @@
 
         <div class="q-pa-md" align="center">
           <div class="row q-pa-sm font-body">
-            <div class="col-9 textoverflow q-pr-sm" align="left">
+            <div
+              class="col-9 textoverflow q-pr-sm"
+              align="left"
+              v-show="$q.localStorage.has('temperature')"
+            >
               <span>{{ $t('conTemp') }}</span>
             </div>
-            <div class="col-3" align="right">{{ $q.localStorage.getItem("temperature") }} &#176;C</div>
+            <div
+              v-show="$q.localStorage.has('temperature')"
+              class="col-3"
+              align="right"
+            >{{ $q.localStorage.getItem("temperature") }} &#176;C</div>
 
             <div class="col-9 textoverflow" align="left" v-show="$q.localStorage.has('diastolic')">
               <span>{{ $t('conBlood') }}</span>
@@ -112,7 +123,8 @@ export default {
     return {
       isForward: this.$q.localStorage.getItem("isForward"),
       isBack: this.$q.localStorage.getItem("isBack"),
-      patientData: this.decrypt(this.$q.localStorage.getItem("data"), 1)
+      patientData: this.decrypt(this.$q.localStorage.getItem("data"), 1),
+      currentDate: ""
     };
   },
   methods: {
@@ -149,26 +161,44 @@ export default {
         inputDate: date.date + "/" + date.month + "/" + date.year,
         patientKey: this.patientData.key,
         patientRoomKey: this.patientData.patientRoomKey,
-        hospitalKey: this.patientData.hospitalKey
+        hospitalKey: this.patientData.hospitalKey,
+        microtime: date.microtime
       };
 
       db.collection("patientLog")
-        .add(finalData)
-        .then(() => {
-          this.$q.localStorage.remove("temperature");
-          this.$q.localStorage.remove("oxygen");
-          this.$q.localStorage.remove("symptoms");
-          this.$q.localStorage.remove("heartRate");
-          this.$q.localStorage.remove("diastolic");
-          this.$q.localStorage.remove("systolic");
-          this.$q.localStorage.remove("symptomsCheck");
-          this.$q.localStorage.remove("enableBackBtn");
-          this.loadingHide();
-          this.$router.push("/schedule");
+        .where(
+          "inputDate",
+          "==",
+          date.date + "/" + date.month + "/" + date.year
+        )
+        .where("inputRound", "==", currentRound)
+        .where("patientKey", "==", this.patientData.key)
+        .get()
+        .then(doc => {
+          if (!doc.size) {
+            db.collection("patientLog")
+              .add(finalData)
+              .then(() => {
+                this.$q.localStorage.remove("temperature");
+                this.$q.localStorage.remove("oxygen");
+                this.$q.localStorage.remove("symptoms");
+                this.$q.localStorage.remove("heartRate");
+                this.$q.localStorage.remove("diastolic");
+                this.$q.localStorage.remove("systolic");
+                this.$q.localStorage.remove("symptomsCheck");
+                this.$q.localStorage.remove("enableBackBtn");
+                this.loadingHide();
+                this.$router.push("/schedule");
+              });
+          }
         });
+    },
+    async getCurrentDate() {
+      this.currentDate = await this.getDate();
     }
   },
   mounted() {
+    this.getCurrentDate();
     if (!this.$q.localStorage.has("enableBackBtn")) {
       this.$router.push("/schedule");
     }
