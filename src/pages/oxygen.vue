@@ -23,7 +23,7 @@
             color="teal"
             outlined
             style="max-width:350px;width:84%;font-size:40px"
-            @keyup.enter="$router.push('/bloodpressure'),$q.localStorage.set('isForward',true),$q.localStorage.set('isBack',false)"
+            @keyup.enter="validateOxygenData()"
             :rules="[val => val >= 50 && val <= 101 || $t('tryagain')]"
           >
             <template v-slot:before>

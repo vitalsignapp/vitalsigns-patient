@@ -24,7 +24,7 @@
             color="teal"
             outlined
             style="max-width:350px;width:70%;"
-            @keyup.enter="$router.push('/oxygen'),$q.localStorage.set('isForward',true),$q.localStorage.set('isBack',false)"
+            @keyup.enter="validateTemerature()"
             :rules="[val => val <= 45 && val >= 35 || $t('tryagain')]"
           >
             <template v-slot:before>
@@ -77,7 +77,7 @@ export default {
   },
   mounted() {
     if (!this.$q.localStorage.has("enableBackBtn")) {
-      this.$router.push("/schedule");
+      this.$router.push("/vitalsign/schedule");
     }
   }
 };

@@ -23,7 +23,7 @@
             color="teal"
             outlined
             style="max-width:350px;width:65%;font-size:40px"
-            @keyup.enter="$router.push('/symptomscheck'),$q.localStorage.set('isForward',true),$q.localStorage.set('isBack',false)"
+            @keyup.enter="validateHeartRate()"
             :rules="[val => val <= 200 && val >= 10 || $t('tryagain')]"
           >
             <template v-slot:after>
@@ -76,7 +76,7 @@ export default {
   },
   mounted() {
     if (!this.$q.localStorage.has("enableBackBtn")) {
-      this.$router.push("/schedule");
+      this.$router.push("/vitalsign/schedule");
     }
   }
 };

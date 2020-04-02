@@ -1,39 +1,39 @@
 const routes = [{
-    path: '/',
+    path: '/:qrcode?',
     component: () => import('pages/Login.vue')
   },
   {
-    path: '/schedule',
+    path: '/vitalsign/schedule',
     component: () => import('pages/Schedule.vue')
   },
   {
-    path: '/thankyou',
+    path: '/vitalsign/thankyou',
     component: () => import('pages/Thankyou.vue')
   },
   {
-    path: '/temperature',
+    path: '/vitalsign/temperature',
     component: () => import('pages/Temperature.vue')
   },
   {
-    path: '/oxygen',
+    path: '/vitalsign/oxygen',
     component: () => import('pages/Oxygen.vue')
   },
   {
-    path: '/bloodpressure',
+    path: '/vitalsign/bloodpressure',
     component: () => import('pages/BloodPressure.vue')
   },
   {
-    path: '/heartrate',
+    path: '/vitalsign/heartrate',
     component: () => import('pages/HeartRate.vue')
   },
   {
-    path: '/symptoms',
+    path: '/vitalsign/symptoms',
     component: () => import('pages/Symptoms.vue')
   }, {
-    path: '/symptomscheck',
+    path: '/vitalsign/symptomscheck',
     component: () => import('pages/Symptomscheck.vue')
   }, {
-    path: '/validation',
+    path: '/vitalsign/validation',
     component: () => import('pages/Validation.vue'),
     name: "validation"
   }

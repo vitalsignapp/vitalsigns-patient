@@ -68,12 +68,12 @@ export default {
   methods: {
     saveSymptoms() {
       this.$q.localStorage.set("symptoms", this.symptoms);
-      this.$router.push("/validation");
+      this.$router.push("/vitalsign/validation");
     }
   },
   mounted() {
     if (!this.$q.localStorage.has("enableBackBtn")) {
-      this.$router.push("/schedule");
+      this.$router.push("/vitalsign/schedule");
     }
   }
 };
