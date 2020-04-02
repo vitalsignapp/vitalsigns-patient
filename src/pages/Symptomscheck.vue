@@ -86,7 +86,7 @@ export default {
   },
   mounted() {
     if (!this.$q.localStorage.has("enableBackBtn")) {
-      this.$router.push("/schedule");
+      this.$router.push("/vitalsign/schedule");
     }
   }
 };

@@ -55,7 +55,7 @@
                 color="teal"
                 outlined
                 style="font-size:25px"
-                @keyup.enter="$router.push('/heartrate'),$q.localStorage.set('isForward',true),$q.localStorage.set('isBack',false)"
+                @keyup.enter="validateBloodPressure()"
                 :rules="[val => val >= 10 && val <= 200 || $t('tryagain')]"
               ></q-input>
             </div>
@@ -113,7 +113,7 @@ export default {
   },
   mounted() {
     if (!this.$q.localStorage.has("enableBackBtn")) {
-      this.$router.push("/schedule");
+      this.$router.push("/vitalsign/schedule");
     }
   }
 };

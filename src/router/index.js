@@ -109,17 +109,17 @@ Vue.mixin({
       let totalStep = config.length
       let nextStep = currentStep == totalStep ? 'otherSymptoms' : config[currentStep].sym
       if (nextStep === "อุณหภูมิร่างกาย") {
-        this.$router.push("/temperature")
+        this.$router.push("/vitalsign/temperature")
       } else if (nextStep === "ค่าออกซิเจนในเลือด") {
-        this.$router.push("oxygen")
+        this.$router.push("/vitalsign/oxygen")
       } else if (nextStep === "ค่าความดันเลือด") {
-        this.$router.push("bloodpressure")
+        this.$router.push("/vitalsign/bloodpressure")
       } else if (nextStep === "อัตราการเต้นของหัวใจ") {
-        this.$router.push("heartrate")
+        this.$router.push("/vitalsign/heartrate")
       } else if (nextStep === "อาการตอนนี้") {
-        this.$router.push("symptomscheck")
+        this.$router.push("/vitalsign/symptomscheck")
       } else {
-        this.$router.push("symptoms")
+        this.$router.push("/vitalsign/symptoms")
       }
 
       if (this.currentStep != totalStep + 1) {

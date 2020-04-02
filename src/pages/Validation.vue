@@ -8,7 +8,7 @@
       leave-active-class="animated fadeOut"
     >
       <div style="max-width:450px;width:100%;margin:auto">
-        <div align="center" class="font-h3 q-pa-md">นาย สมชาย มากบุตร</div>
+        <div align="center" class="font-h3 q-pa-md">{{ patientData.name }} {{ patientData.surname }}</div>
 
         <div
           align="center"
@@ -200,7 +200,7 @@ export default {
                     this.$q.localStorage.remove("symptomsCheck");
                     this.$q.localStorage.remove("enableBackBtn");
                     this.loadingHide();
-                    this.$router.push("/schedule");
+                    this.$router.push("/vitalsign/schedule");
                   });
               });
           }
@@ -213,7 +213,7 @@ export default {
   mounted() {
     this.getCurrentDate();
     if (!this.$q.localStorage.has("enableBackBtn")) {
-      this.$router.push("/schedule");
+      this.$router.push("/vitalsign/schedule");
     }
   }
 };

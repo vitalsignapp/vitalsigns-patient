@@ -112,11 +112,15 @@ export default {
               .collection("hospital")
               .doc(doc.docs[0].data().hospitalKey)
               .get();
+            this.$q.localStorage.set(
+              "hospitalKey",
+              doc.docs[0].data().hospitalKey
+            );
 
             this.$q.localStorage.set("config", hospitalData.data());
             this.$q.localStorage.set("data", encryptData);
             this.$q.localStorage.set("enableBackBtn", true);
-            this.$router.push("schedule");
+            this.$router.push("/vitalsign/schedule");
             this.loadingHide();
           } else {
             this.loadingHide();
@@ -127,6 +131,47 @@ export default {
             });
           }
         });
+    },
+    loginQR(qrcode) {
+      this.loadingShow();
+      db.collection("patientData")
+        .doc(qrcode)
+        .get()
+        .then(async doc => {
+          if (doc.exists) {
+            let mergeData = {
+              ...doc.data(),
+              ...{ key: doc.id }
+            };
+            let encryptData = this.encrypt(mergeData, 1);
+            // GET HOSPITAL DATA CONFIG
+            let hospitalData = await db
+              .collection("hospital")
+              .doc(doc.data().hospitalKey)
+              .get();
+            this.$q.localStorage.set("hospitalKey", doc.data().hospitalKey);
+
+            this.$q.localStorage.set("config", hospitalData.data());
+            this.$q.localStorage.set("data", encryptData);
+            this.$q.localStorage.set("enableBackBtn", true);
+            this.$router.push("/vitalsign/schedule");
+            this.loadingHide();
+          } else {
+            this.loadingHide();
+            this.$q.dialog({
+              title: "Invalid",
+              message: "Invalid Data",
+              ok: { color: "orange-5", textColor: "black" }
+            });
+          }
+        });
+    }
+  },
+  mounted() {
+    if (this.$route.params.qrcode) {
+      let patientKey = this.$route.params.qrcode;
+      console.log(patientKey);
+      this.loginQR(patientKey);
     }
   }
 };
