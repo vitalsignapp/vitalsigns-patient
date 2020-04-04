@@ -51,12 +51,16 @@
               name="query_builder"
               style="margin-right:3px;margin-left:-3px"
             ></q-icon>
-            <span
-              v-if="items.range.includes(currentTime) && !patientLogData.includes(items.round)"
-            >รอตรวจ</span>
-            <span v-else-if="patientLogData.includes(items.round)">ตรวจแล้ว</span>
-            <span class="color-light-gray" v-else-if="currentTime > items.round">ไม่ได้ตรวจ</span>
-            <span class="color-light-gray" v-else>ยังไม่ถึงรอบตรวจ</span>
+
+            <span v-if="currentTime < 2">ยังไม่ถึงรอบตรวจ</span>
+            <span v-else>
+              <span
+                v-if="items.range.includes(currentTime) && !patientLogData.includes(items.round)"
+              >รอตรวจ</span>
+              <span v-else-if="patientLogData.includes(items.round)">ตรวจแล้ว</span>
+              <span class="color-light-gray" v-else-if="currentTime > items.round">ไม่ได้ตรวจ</span>
+              <span class="color-light-gray" v-else>ยังไม่ถึงรอบตรวจ</span>
+            </span>
           </div>
         </q-btn>
       </div>
@@ -107,7 +111,7 @@ export default {
         },
         {
           time: "22:00",
-          range: [22, 23, 0, 1],
+          range: [22, 23, 24],
           round: 22
         }
       ],
@@ -143,12 +147,25 @@ export default {
       this.loadPatientLogData();
     },
     loadPatientLogData() {
+      let currentHours = new Date().getHours();
+
       let date =
         this.currentDate.date +
         "/" +
         this.currentDate.month +
         "/" +
         this.currentDate.year;
+
+      // if (currentHours < 2) {
+      //   let yesterday = Number(this.currentDate.date) - 1;
+      //   yesterday = yesterday < 10 ? "0" + yesterday : yesterday;
+      //   date =
+      //     yesterday +
+      //     "/" +
+      //     this.currentDate.month +
+      //     "/" +
+      //     this.currentDate.year;
+      // }
 
       db.collection("patientLog")
         .where("inputDate", "==", date)
@@ -162,7 +179,6 @@ export default {
           dataTemp = dataTemp.sort((a, b) => a - b);
           this.patientLogData = dataTemp;
 
-          let currentHours = new Date().getHours();
           let currentRound;
           if (currentHours >= 2 && currentHours < 6) {
             currentRound = 2;
@@ -182,6 +198,11 @@ export default {
             this.isDisableButton = true;
           } else {
             this.isDisableButton = false;
+          }
+          if (currentHours < 2) {
+            // เกิน เที่ยงคืน ไม่ให้กรอก ให้รอ รอบตี 2 เลย
+            this.isDisableButton = true;
+            this.loadingHide();
           }
 
           this.loadingHide();

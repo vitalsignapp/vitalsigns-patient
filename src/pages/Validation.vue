@@ -147,6 +147,8 @@ export default {
         currentRound = 22;
       }
       let date = await this.getDate();
+      let inputDate = date.date + "/" + date.month + "/" + date.year;
+
       let finalData = {
         temperature: this.$q.localStorage.getItem("temperature"),
         bloodPressure:
@@ -158,7 +160,7 @@ export default {
         symptomsCheck: this.$q.localStorage.getItem("symptomsCheck"),
         otherSymptoms: this.$q.localStorage.getItem("symptoms"),
         inputRound: currentRound,
-        inputDate: date.date + "/" + date.month + "/" + date.year,
+        inputDate: inputDate,
         patientKey: this.patientData.key,
         patientRoomKey: this.patientData.patientRoomKey,
         hospitalKey: this.patientData.hospitalKey,
@@ -172,11 +174,7 @@ export default {
         });
 
       db.collection("patientLog")
-        .where(
-          "inputDate",
-          "==",
-          date.date + "/" + date.month + "/" + date.year
-        )
+        .where("inputDate", "==", inputDate)
         .where("inputRound", "==", currentRound)
         .where("patientKey", "==", this.patientData.key)
         .get()
@@ -200,7 +198,7 @@ export default {
                     this.$q.localStorage.remove("symptomsCheck");
                     this.$q.localStorage.remove("enableBackBtn");
                     this.loadingHide();
-                    this.$router.push("/vitalsign/schedule");
+                    this.$router.push("/vitalsign/thankyou");
                   });
               });
           }

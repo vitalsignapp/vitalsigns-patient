@@ -11,7 +11,7 @@
         <span>{{ $t('thankBody') }}</span>
       </div>
       <div align="center" class="q-pt-md">
-        <q-btn dense class="button-action" to="/schedule">
+        <q-btn dense class="button-action" to="/vitalsign/schedule">
           <span>{{ $t('backToHome') }}</span>
         </q-btn>
       </div>
