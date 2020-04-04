@@ -1,12 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import routes from "./routes";
-import axios from 'axios'
-import VueAxios from 'vue-axios'
-import VueCryptojs from 'vue-cryptojs'
+import axios from "axios";
+import VueAxios from "vue-axios";
+import VueCryptojs from "vue-cryptojs";
 Vue.use(VueRouter);
-Vue.use(VueAxios, axios)
-Vue.use(VueCryptojs)
+Vue.use(VueAxios, axios);
+Vue.use(VueCryptojs);
 
 /*
  * If not building with SSR mode, you can
@@ -17,7 +17,6 @@ Vue.use(VueCryptojs)
  * with the Router instance.
  */
 
-
 var firebaseConfig = {
   apiKey: "AIzaSyDkfuz9optU8t14BZJBgJ9JNYdH4Omdh6A",
   authDomain: "vitalsign-2bc48.firebaseapp.com",
@@ -26,12 +25,11 @@ var firebaseConfig = {
   storageBucket: "vitalsign-2bc48.appspot.com",
   messagingSenderId: "67633726727",
   appId: "1:67633726727:web:b535d92a91ec80695bb1a2",
-  measurementId: "G-MEX9V112SR"
+  measurementId: "G-MEX9V112SR",
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
-
 
 Vue.mixin({
   data() {
@@ -39,7 +37,9 @@ Vue.mixin({
       panel: "step1",
       currentStep: 1,
       totalStep: 7,
-      version: "0.001",
+      version: "0.0.001",
+
+      syncVersion: null,
     };
   },
   methods: {
@@ -53,37 +53,40 @@ Vue.mixin({
         date: currentDate,
         month: currentMonth,
         year: currentYear,
-        microtime: res.data[0].microtime
-      }
-      return result
+        microtime: res.data[0].microtime,
+      };
+      return result;
     },
     loadingShow() {
       this.$q.loading.show({
-        delay: 400
-      })
+        delay: 400,
+      });
     },
     loadingHide() {
-      this.$q.loading.hide()
+      this.$q.loading.hide();
     },
     encrypt(data, type) {
       // ฟังก์ชันการเข้ารหัส AES
       // type 1.OBJ 2.String / boolean / number
-      let result
+      let result;
       if (type == 1) {
         // object TYPE
-        result = this.CryptoJS.AES.encrypt(JSON.stringify(data), "chomart12").toString()
+        result = this.CryptoJS.AES.encrypt(
+          JSON.stringify(data),
+          "chomart12"
+        ).toString();
       } else if (type == 2) {
         // STRING TYPE
-        data = data.toString()
-        result = this.CryptoJS.AES.encrypt(data, "chomart12").toString()
+        data = data.toString();
+        result = this.CryptoJS.AES.encrypt(data, "chomart12").toString();
       }
-      return result
+      return result;
     },
     decrypt(data, type) {
       // ฟังก์ชันการถอดรหัส AES
       // type 1.OBJ 2.String 3.Number 4.boolean
       if (!data) {
-        return data
+        return data;
       }
       let result = this.CryptoJS.AES.decrypt(data, "chomart12").toString(
         this.CryptoJS.enc.Utf8
@@ -94,44 +97,45 @@ Vue.mixin({
         result = JSON.parse(result.toString(this.CryptoJS.enc.Utf8));
       } else if (type == 3) {
         // number type
-        result = Number(result)
+        result = Number(result);
       } else if (type == 4) {
         // JSON TYPE
-        result = JSON.parse(result)
+        result = JSON.parse(result);
       }
-      return result
+      return result;
     },
     routeStep() {
       this.$q.localStorage.set("isBack", false);
       this.$q.localStorage.set("isForward", true);
-      let currentStep = this.$q.localStorage.getItem("currentStep")
-      let config = this.$q.localStorage.getItem("config").vitalSignsConfig.filter(x => x.status)
-      let totalStep = config.length
-      let nextStep = currentStep == totalStep ? 'otherSymptoms' : config[currentStep].sym
+      let currentStep = this.$q.localStorage.getItem("currentStep");
+      let config = this.$q.localStorage
+        .getItem("config")
+        .vitalSignsConfig.filter((x) => x.status);
+      let totalStep = config.length;
+      let nextStep =
+        currentStep == totalStep ? "otherSymptoms" : config[currentStep].sym;
       if (nextStep === "อุณหภูมิร่างกาย") {
-        this.$router.push("/vitalsign/temperature")
+        this.$router.push("/vitalsign/temperature");
       } else if (nextStep === "ค่าออกซิเจนในเลือด") {
-        this.$router.push("/vitalsign/oxygen")
+        this.$router.push("/vitalsign/oxygen");
       } else if (nextStep === "ค่าความดันเลือด") {
-        this.$router.push("/vitalsign/bloodpressure")
+        this.$router.push("/vitalsign/bloodpressure");
       } else if (nextStep === "อัตราการเต้นของหัวใจ") {
-        this.$router.push("/vitalsign/heartrate")
+        this.$router.push("/vitalsign/heartrate");
       } else if (nextStep === "อาการตอนนี้") {
-        this.$router.push("/vitalsign/symptomscheck")
+        this.$router.push("/vitalsign/symptomscheck");
       } else {
-        this.$router.push("/vitalsign/symptoms")
+        this.$router.push("/vitalsign/symptoms");
       }
 
       if (this.currentStep != totalStep + 1) {
-        this.$q.localStorage.set("currentStep", currentStep + 1)
+        this.$q.localStorage.set("currentStep", currentStep + 1);
       }
-
-
     },
     showMonthName(index) {
-      let m = Number(index)
-      let month
-      if (this.$i18n.locale != 'th-th') {
+      let m = Number(index);
+      let month;
+      if (this.$i18n.locale != "th-th") {
         if (m == 1) {
           month = "January";
         } else if (m == 2) {
@@ -185,16 +189,31 @@ Vue.mixin({
         }
       }
 
-      return month
-    }
-  }
+      return month;
+    },
+    loadVersion() {
+      let refs = db.collection("version").doc("vitalsign-user");
+
+      this.syncVersion = refs.onSnapshot((result) => {
+        if (this.version != result.data().version) {
+          window.location.reload(true);
+        }
+      });
+    },
+  },
+  mounted() {
+    this.loadVersion();
+  },
+  beforeDestroy() {
+    this.syncVersion();
+  },
 });
 
-export default function ( /* { store, ssrContext } */ ) {
+export default function (/* { store, ssrContext } */) {
   const Router = new VueRouter({
     scrollBehavior: () => ({
       x: 0,
-      y: 0
+      y: 0,
     }),
     routes,
 
@@ -202,7 +221,7 @@ export default function ( /* { store, ssrContext } */ ) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
-    base: process.env.VUE_ROUTER_BASE
+    base: process.env.VUE_ROUTER_BASE,
   });
 
   return Router;

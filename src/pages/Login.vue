@@ -67,9 +67,11 @@
       </div>
 
       <div align="center" class="q-py-lg">
-        <span class="color-primary-500 font-body">
-          <span>{{ $t('about') }}</span>
-        </span>
+        <a href="https://vitalsignapp.com/" target="__blank" style="text-decoration:none">
+          <span class="color-primary-500 font-body">
+            <span>{{ $t('about') }}</span>
+          </span>
+        </a>
       </div>
     </div>
   </div>
