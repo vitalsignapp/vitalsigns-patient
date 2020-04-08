@@ -37,7 +37,7 @@ Vue.mixin({
       panel: "step1",
       currentStep: 1,
       totalStep: 7,
-      version: "1.02.002",
+      version: "1.02.004",
 
       syncVersion: null,
     };

@@ -13,7 +13,7 @@
         <div
           align="center"
           class="font-body color-dark-gray"
-        >{{ currentDate.date}} {{ showMonthName(currentDate.month) }} {{ currentDate.year }}รอบ {{ checkCurrentRound() }}:00 น.</div>
+        >{{ currentDate.date}} {{ showMonthName(currentDate.month) }} {{ currentDate.year }}</div>
 
         <div align="center" class="font-body color-dark-gray">รอบ {{ checkCurrentRound() }}:00 น.</div>
 

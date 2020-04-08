@@ -68,7 +68,7 @@
 
       <div align="center" class="q-py-lg">
         <span class="color-primary-500 font-body">
-          <a href="https://www.vitalsignapp.com" style="text-decoration:none;color:inherit">
+          <a href="https://vitalsignapp.com" style="text-decoration:none;color:inherit">
             <span>{{ $t('about') }}</span>
           </a>
         </span>
@@ -103,6 +103,7 @@ export default {
       this.loadingShow();
       db.collection("patientData")
         .where("HN", "==", this.username)
+        .where("hospitalKey", "==", this.$q.localStorage.getItem("hospitalKey"))
         .get()
         .then(async doc => {
           if (doc.size) {
@@ -116,10 +117,6 @@ export default {
               .collection("hospital")
               .doc(doc.docs[0].data().hospitalKey)
               .get();
-            this.$q.localStorage.set(
-              "hospitalKey",
-              doc.docs[0].data().hospitalKey
-            );
 
             this.$q.localStorage.set("config", hospitalData.data());
             this.$q.localStorage.set("data", encryptData);
@@ -153,8 +150,6 @@ export default {
               .collection("hospital")
               .doc(doc.data().hospitalKey)
               .get();
-            this.$q.localStorage.set("hospitalKey", doc.data().hospitalKey);
-
             this.$q.localStorage.set("config", hospitalData.data());
             this.$q.localStorage.set("data", encryptData);
             this.$q.localStorage.set("enableBackBtn", true);
@@ -169,12 +164,22 @@ export default {
             });
           }
         });
+    },
+    getDomainPrefix() {
+      let domain = window.location.hostname;
+      let prefix = domain.split(".")[0];
+      db.collection("hospital")
+        .where("domainPrefix", "==", prefix)
+        .get()
+        .then(doc => {
+          this.$q.localStorage.set("hospitalKey", doc.docs[0].id);
+        });
     }
   },
   mounted() {
+    this.getDomainPrefix();
     if (this.$route.params.qrcode) {
       let patientKey = this.$route.params.qrcode;
-      console.log(patientKey);
       this.loginQR(patientKey);
     }
   }
