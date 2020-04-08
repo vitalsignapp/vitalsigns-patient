@@ -41,24 +41,24 @@ export default {
       this.$q.localStorage.set("isBack", true);
       this.$q.localStorage.set("isForward", false);
       if (this.step == 1) {
-        this.$router.push("vitalsign/schedule");
+        this.$router.push("/vitalsign/schedule");
         return;
       }
 
       if (this.$route.name == "validation") {
-        this.$router.push("vitalsign/symptoms");
+        this.$router.push("/vitalsign/symptoms");
       } else {
         let previousStep = this.currentConfig[this.step - 2].sym;
         if (previousStep === "อุณหภูมิร่างกาย") {
-          this.$router.push("vitalsign/temperature");
+          this.$router.push("/vitalsign/temperature");
         } else if (previousStep === "ค่าออกซิเจนในเลือด") {
-          this.$router.push("vitalsign/oxygen");
+          this.$router.push("/vitalsign/oxygen");
         } else if (previousStep === "ค่าความดันเลือด") {
-          this.$router.push("vitalsign/bloodpressure");
+          this.$router.push("/vitalsign/bloodpressure");
         } else if (previousStep === "อัตราการเต้นของหัวใจ") {
-          this.$router.push("vitalsign/heartrate");
+          this.$router.push("/vitalsign/heartrate");
         } else if (previousStep === "อาการตอนนี้") {
-          this.$router.push("vitalsign/symptomscheck");
+          this.$router.push("/vitalsign/symptomscheck");
         }
         this.$q.localStorage.set("currentStep", this.step - 1);
       }

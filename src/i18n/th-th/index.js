@@ -6,7 +6,7 @@ export default {
   // LOGIN
   login: "เข้าใช้งาน",
   about: "เกี่ยวกับ VitalSign",
-  loginHeader: "ใส่รหัสผู้ป่วยที่ได้รับจากพบาบาล",
+  loginHeader: "ใส่รหัสผู้ป่วยที่ได้รับจากพยาบาล",
   loginPlaceholder: "1234 วัน/เดือน/ปี",
   // schedule
   signout: "ออกจากระบบ",

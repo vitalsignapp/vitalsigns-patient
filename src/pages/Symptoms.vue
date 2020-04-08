@@ -29,7 +29,7 @@
             style="border:1px solid #9e9e9e;min-width:80px"
             dense
             class="stroked-button"
-            to="/validation"
+            to="/vitalsign/validation"
             flat
             @click="$q.localStorage.set('isForward',true),$q.localStorage.set('isBack',false)"
           >
@@ -72,6 +72,10 @@ export default {
     }
   },
   mounted() {
+    if (!this.$q.localStorage.has("hospitalKey")) {
+      this.$router.push("/");
+      return;
+    }
     if (!this.$q.localStorage.has("enableBackBtn")) {
       this.$router.push("/vitalsign/schedule");
     }

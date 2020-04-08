@@ -56,10 +56,13 @@
             <span v-else>
               <span
                 v-if="items.range.includes(currentTime) && !patientLogData.includes(items.round)"
-              >รอตรวจ</span>
-              <span v-else-if="patientLogData.includes(items.round)">ตรวจแล้ว</span>
-              <span class="color-light-gray" v-else-if="currentTime > items.round">ไม่ได้ตรวจ</span>
-              <span class="color-light-gray" v-else>ยังไม่ถึงรอบตรวจ</span>
+              >{{ $t('schWaitForCheck') }}</span>
+              <span v-else-if="patientLogData.includes(items.round)">{{ $t('schChecked') }}</span>
+              <span
+                class="color-light-gray"
+                v-else-if="currentTime > items.round"
+              >{{ $t('schHavenotCheck') }}</span>
+              <span class="color-light-gray" v-else>{{ $t('schWaitForCheck') }}</span>
             </span>
           </div>
         </q-btn>
@@ -156,17 +159,6 @@ export default {
         "/" +
         this.currentDate.year;
 
-      // if (currentHours < 2) {
-      //   let yesterday = Number(this.currentDate.date) - 1;
-      //   yesterday = yesterday < 10 ? "0" + yesterday : yesterday;
-      //   date =
-      //     yesterday +
-      //     "/" +
-      //     this.currentDate.month +
-      //     "/" +
-      //     this.currentDate.year;
-      // }
-
       db.collection("patientLog")
         .where("inputDate", "==", date)
         .where("patientKey", "==", this.patientData.key)
@@ -215,6 +207,10 @@ export default {
     }
   },
   mounted() {
+    if (!this.$q.localStorage.has("hospitalKey")) {
+      this.$router.push("/");
+      return;
+    }
     this.$q.localStorage.set("currentStep", 0);
     this.getCurrentDate();
     this.$q.localStorage.set("isForward", true);

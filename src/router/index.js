@@ -37,7 +37,7 @@ Vue.mixin({
       panel: "step1",
       currentStep: 1,
       totalStep: 7,
-      version: "0.0.001",
+      version: "1.02",
 
       syncVersion: null,
     };
@@ -209,7 +209,7 @@ Vue.mixin({
   },
 });
 
-export default function (/* { store, ssrContext } */) {
+export default function ( /* { store, ssrContext } */ ) {
   const Router = new VueRouter({
     scrollBehavior: () => ({
       x: 0,

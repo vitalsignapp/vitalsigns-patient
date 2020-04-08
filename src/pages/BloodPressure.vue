@@ -31,6 +31,7 @@
                 @keyup.enter="$refs.diatolic.focus()"
                 @keyup="systolic.length == 3 ? $refs.diatolic.focus() : null"
                 :rules="[val => val >= 50 && val <= 400 || $t('tryagain')]"
+                lazy-rules
               ></q-input>
             </div>
           </div>
@@ -57,6 +58,7 @@
                 style="font-size:25px"
                 @keyup.enter="validateBloodPressure()"
                 :rules="[val => val >= 10 && val <= 200 || $t('tryagain')]"
+                lazy-rules
               ></q-input>
             </div>
           </div>
@@ -112,6 +114,10 @@ export default {
     }
   },
   mounted() {
+    if (!this.$q.localStorage.has("hospitalKey")) {
+      this.$router.push("/");
+      return;
+    }
     if (!this.$q.localStorage.has("enableBackBtn")) {
       this.$router.push("/vitalsign/schedule");
     }

@@ -67,13 +67,15 @@
       </div>
 
       <div align="center" class="q-py-lg">
-        <a href="https://vitalsignapp.com/" target="__blank" style="text-decoration:none">
-          <span class="color-primary-500 font-body">
+        <span class="color-primary-500 font-body">
+          <a href="https://www.vitalsignapp.com">
             <span>{{ $t('about') }}</span>
-          </span>
-        </a>
+          </a>
+        </span>
       </div>
     </div>
+
+    <span class="absolute-bottom-right q-pa-sm font-body">V+{{ version }}</span>
   </div>
 </template>
 

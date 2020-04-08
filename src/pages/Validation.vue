@@ -63,43 +63,48 @@
           </div>
         </div>
 
-        <span v-if="$q.localStorage.has('symptomsCheck')">
-          <div v-if="$q.localStorage.getItem('enableBackBtn')">
-            <div v-if="$q.localStorage.getItem('symptomsCheck').filter(x => x.status).length">
-              <div align="center" class="font-body color-dark-gray q-pb-sm">
-                <span>{{ $t('conSymHeader') }}</span>
-              </div>
-              <div class="q-pb-md">
-                <q-separator></q-separator>
-              </div>
-
-              <div class="font-body">
-                <ul>
-                  <li
-                    class="q-pa-xs"
-                    v-for="(items,index) in $q.localStorage.getItem('symptomsCheck').filter(x => x.status)"
-                    :key="index"
-                  >{{ items.sym }}</li>
-                  <li
-                    class="q-pa-xs"
-                    v-if="this.$q.localStorage.getItem('symptoms') != ''"
-                  >อื่นๆ: {{ this.$q.localStorage.getItem("symptoms") }}</li>
-                </ul>
-              </div>
+        <span v-if="$q.localStorage.has('symptomsCheck') && $q.localStorage.has('symptoms')">
+          <div
+            align="center"
+            class="font-body color-dark-gray q-pb-sm"
+            v-if="$q.localStorage.getItem('symptomsCheck').filter(x => x.status).length"
+          >
+            <span>{{ $t('conSymHeader') }}</span>
+            <q-separator></q-separator>
+          </div>
+          <div class="q-pb-md">
+            <div class="font-body">
+              <ul>
+                <li
+                  class="q-pa-xs"
+                  v-for="(items,index) in $q.localStorage.getItem('symptomsCheck').filter(x => x.status)"
+                  :key="index"
+                >{{ items.sym }}</li>
+                <li
+                  class="q-pa-xs"
+                  v-if="this.$q.localStorage.getItem('symptoms') != ''"
+                >อื่นๆ: {{ this.$q.localStorage.getItem("symptoms") }}</li>
+              </ul>
             </div>
           </div>
         </span>
 
-        <!-- กรณีโรงพยาบาลไม่เปิด ระบบ Check แต่มีการกรอกอาการอื่นๆ -->
-        <span
-          v-if="$q.localStorage.has('symptoms') && $q.localStorage.has('symptomsCheck') == false"
-        >
-          <ul>
+        <span v-else>
+          <ul class="font-body" v-if="$q.localStorage.has('symptomsCheck')">
             <li
               class="q-pa-xs"
-              v-if="this.$q.localStorage.getItem('symptoms') != ''"
-            >อื่นๆ: {{ this.$q.localStorage.getItem("symptoms") }}</li>
+              v-for="(items,index) in $q.localStorage.getItem('symptomsCheck').filter(x => x.status)"
+              :key="index"
+            >{{ items.sym }}</li>
           </ul>
+          <span v-else>
+            <ul>
+              <li
+                class="q-pa-xs"
+                v-if="this.$q.localStorage.getItem('symptoms') != '' && this.$q.localStorage.has('symptoms')"
+              >อื่นๆ: {{ this.$q.localStorage.getItem("symptoms") }}</li>
+            </ul>
+          </span>
         </span>
 
         <div align="center">
@@ -210,6 +215,10 @@ export default {
   },
   mounted() {
     this.getCurrentDate();
+    if (!this.$q.localStorage.has("hospitalKey")) {
+      this.$router.push("/");
+      return;
+    }
     if (!this.$q.localStorage.has("enableBackBtn")) {
       this.$router.push("/vitalsign/schedule");
     }

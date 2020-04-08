@@ -85,6 +85,10 @@ export default {
     }
   },
   mounted() {
+    if (!this.$q.localStorage.has("hospitalKey")) {
+      this.$router.push("/");
+      return;
+    }
     if (!this.$q.localStorage.has("enableBackBtn")) {
       this.$router.push("/vitalsign/schedule");
     }

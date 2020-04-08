@@ -17,7 +17,7 @@
       </div>
     </div>
     <div align="center" class="text-teal font-body absolute-bottom q-pb-md">
-      <a href style="text-decoration:none">
+      <a href="https://forms.gle/Sk3gq9EdGeM2R5j59" style="text-decoration:none">
         <span>{{ $t('feedback') }}</span>
       </a>
     </div>

@@ -6,7 +6,7 @@ export default {
   // LOGIN
   login: "Login",
   about: "About VitalSign",
-  loginHeader: "Enter Hospital Number ()",
+  loginHeader: "Enter Hospital Number",
   loginPlaceholder: "1234ddmmyy",
   // schedule
   signout: "Log Out",

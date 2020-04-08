@@ -20,12 +20,13 @@
             autofocus
             mask="##.#"
             placeholder="00.0"
-            v-model="temperature"
+            v-model.lazy="temperature"
             color="teal"
             outlined
             style="max-width:350px;width:70%;"
             @keyup.enter="validateTemerature()"
             :rules="[val => val <= 45 && val >= 35 || $t('tryagain')]"
+            lazy-rules
           >
             <template v-slot:before>
               <img
@@ -76,6 +77,10 @@ export default {
     }
   },
   mounted() {
+    if (!this.$q.localStorage.has("hospitalKey")) {
+      this.$router.push("/");
+      return;
+    }
     if (!this.$q.localStorage.has("enableBackBtn")) {
       this.$router.push("/vitalsign/schedule");
     }

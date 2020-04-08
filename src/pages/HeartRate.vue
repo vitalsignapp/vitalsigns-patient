@@ -25,6 +25,7 @@
             style="max-width:350px;width:65%;font-size:40px"
             @keyup.enter="validateHeartRate()"
             :rules="[val => val <= 200 && val >= 10 || $t('tryagain')]"
+            lazy-rules
           >
             <template v-slot:after>
               <img
@@ -75,6 +76,10 @@ export default {
     }
   },
   mounted() {
+    if (!this.$q.localStorage.has("hospitalKey")) {
+      this.$router.push("/");
+      return;
+    }
     if (!this.$q.localStorage.has("enableBackBtn")) {
       this.$router.push("/vitalsign/schedule");
     }

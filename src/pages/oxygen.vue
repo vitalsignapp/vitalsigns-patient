@@ -25,6 +25,7 @@
             style="max-width:350px;width:84%;font-size:40px"
             @keyup.enter="validateOxygenData()"
             :rules="[val => val >= 50 && val <= 101 || $t('tryagain')]"
+            lazy-rules
           >
             <template v-slot:before>
               <img
@@ -78,8 +79,12 @@ export default {
     }
   },
   mounted() {
+    if (!this.$q.localStorage.has("hospitalKey")) {
+      this.$router.push("/");
+      return;
+    }
     if (!this.$q.localStorage.has("enableBackBtn")) {
-      this.$router.push("/schedule");
+      this.$router.push("/vitalsign/schedule");
     }
   }
 };
