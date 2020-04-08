@@ -14,6 +14,7 @@ export default {
   schChecked: "Checked",
   schHavenotCheck: "Have not checked",
   schWaitForCheck: "Wait for checking",
+  schCurrentRound: "Wait for checking",
   schBtn: "Start self-check",
   dateOfBirth: "Date of birth",
   // temperature
@@ -61,6 +62,6 @@ export default {
   tryagain: "Please try again",
   // PROMPT logout
   logoutTitle: "Are you sure you want to log out?",
-
+  fix: "edit"
 
 }

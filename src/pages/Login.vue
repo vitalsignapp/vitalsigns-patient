@@ -68,7 +68,7 @@
 
       <div align="center" class="q-py-lg">
         <span class="color-primary-500 font-body">
-          <a href="https://www.vitalsignapp.com">
+          <a href="https://www.vitalsignapp.com" style="text-decoration:none;color:inherit">
             <span>{{ $t('about') }}</span>
           </a>
         </span>

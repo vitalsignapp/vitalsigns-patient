@@ -18,7 +18,7 @@
             :input-class="oxygen.length > 0 ? ' text-teal q-pl-md  text-weight-medium' : ' text-grey q-pl-md  text-weight-medium'"
             autofocus
             mask="###"
-            placeholder="000"
+            placeholder="0"
             v-model="oxygen"
             color="teal"
             outlined

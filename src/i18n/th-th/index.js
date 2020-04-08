@@ -14,6 +14,7 @@ export default {
   schChecked: "ตรวจแล้ว",
   schHavenotCheck: "ยังไม่ได้ตรวจ",
   schWaitForCheck: "รอตรวจ",
+  schCurrentRound: "ถึงรอบตรวจ",
   schBtn: "เริ่มตรวจตัวเอง",
   dateOfBirth: "วันเกิด",
   // temperature
@@ -51,7 +52,7 @@ export default {
   runyNose: "มีน้ำมูก",
   difficultyInBreathing: "แน่นหน้าอก: หายใจไม่สะดวก",
   fatigue: "หายใจเหนื่อย",
-  vomit: "อาเจียร",
+  vomit: "อาเจียน/คลื่นใส้",
   diarrhea: "ท้องเสีย: ถ่ายเหลว",
   // PROMPT LOGIN
   invalidPasswordTitle: "รหัสผู้ป่วยไม่ถูกต้อง",
@@ -62,4 +63,5 @@ export default {
   tryagain: "กรุณากรอกใหม่อีกครั้ง",
   // PROMPT logout
   logoutTitle: "คุณต้องการออกจากระบบใช่หรือไม่?",
+  fix: "แก้ไข"
 }

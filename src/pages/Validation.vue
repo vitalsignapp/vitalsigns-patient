@@ -13,7 +13,9 @@
         <div
           align="center"
           class="font-body color-dark-gray"
-        >{{ currentDate.date}} {{ showMonthName(currentDate.month) }} {{ currentDate.year }}</div>
+        >{{ currentDate.date}} {{ showMonthName(currentDate.month) }} {{ currentDate.year }}รอบ {{ checkCurrentRound() }}:00 น.</div>
+
+        <div align="center" class="font-body color-dark-gray">รอบ {{ checkCurrentRound() }}:00 น.</div>
 
         <div class="q-pt-sm q-pb-md">
           <q-separator></q-separator>
@@ -107,10 +109,15 @@
           </span>
         </span>
 
-        <div align="center">
-          <q-btn dense class="button-action" @click="saveData()">
-            <span>{{ $t('conSendData') }}</span>
-          </q-btn>
+        <div align="center ">
+          <div class="q-gutter-md">
+            <q-btn style="min-width:80px;" class="stroked-button" dense @click="editVitalsigns()">
+              <span>{{ $t('fix') }}</span>
+            </q-btn>
+            <q-btn dense class="button-action" @click="saveData()">
+              <span>{{ $t('conSendData') }}</span>
+            </q-btn>
+          </div>
         </div>
       </div>
     </transition>
@@ -133,24 +140,35 @@ export default {
     };
   },
   methods: {
+    editVitalsigns() {
+      // FIND FIRST STEP AND GO BACK TO IT
+      let config = this.$q.localStorage
+        .getItem("config")
+        .vitalSignsConfig.filter(x => x.status);
+
+      let firstStep = config[0].sym;
+
+      if (firstStep === "อุณหภูมิร่างกาย") {
+        this.$router.push("/vitalsign/temperature");
+      } else if (firstStep === "ค่าออกซิเจนในเลือด") {
+        this.$router.push("/vitalsign/oxygen");
+      } else if (firstStep === "ค่าความดันเลือด") {
+        this.$router.push("/vitalsign/bloodpressure");
+      } else if (firstStep === "อัตราการเต้นของหัวใจ") {
+        this.$router.push("/vitalsign/heartrate");
+      } else if (firstStep === "อาการตอนนี้") {
+        this.$router.push("/vitalsign/symptomscheck");
+      } else {
+        this.$router.push("/vitalsign/symptoms");
+      }
+      this.$q.localStorage.set("currentStep", 1);
+    },
     async saveData() {
       this.loadingShow();
 
       let currentHours = new Date().getHours();
-      let currentRound;
-      if (currentHours >= 2 && currentHours < 6) {
-        currentRound = 2;
-      } else if (currentHours >= 6 && currentHours < 10) {
-        currentRound = 6;
-      } else if (currentHours >= 10 && currentHours < 14) {
-        currentRound = 10;
-      } else if (currentHours >= 14 && currentHours < 18) {
-        currentRound = 14;
-      } else if (currentHours >= 18 && currentHours < 22) {
-        currentRound = 18;
-      } else {
-        currentRound = 22;
-      }
+      let currentRound = this.checkCurrentRound();
+
       let date = await this.getDate();
       let inputDate = date.date + "/" + date.month + "/" + date.year;
 
@@ -211,6 +229,24 @@ export default {
     },
     async getCurrentDate() {
       this.currentDate = await this.getDate();
+    },
+    checkCurrentRound() {
+      let currentHours = new Date().getHours();
+      let currentRound;
+      if (currentHours >= 2 && currentHours < 6) {
+        currentRound = 2;
+      } else if (currentHours >= 6 && currentHours < 10) {
+        currentRound = 6;
+      } else if (currentHours >= 10 && currentHours < 14) {
+        currentRound = 10;
+      } else if (currentHours >= 14 && currentHours < 18) {
+        currentRound = 14;
+      } else if (currentHours >= 18 && currentHours < 22) {
+        currentRound = 18;
+      } else {
+        currentRound = 22;
+      }
+      return currentRound;
     }
   },
   mounted() {

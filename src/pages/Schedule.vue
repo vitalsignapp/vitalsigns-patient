@@ -56,7 +56,7 @@
             <span v-else>
               <span
                 v-if="items.range.includes(currentTime) && !patientLogData.includes(items.round)"
-              >{{ $t('schWaitForCheck') }}</span>
+              >{{ $t('schCurrentRound') }}</span>
               <span v-else-if="patientLogData.includes(items.round)">{{ $t('schChecked') }}</span>
               <span
                 class="color-light-gray"
@@ -207,6 +207,7 @@ export default {
     }
   },
   mounted() {
+    this.loadVersion();
     if (!this.$q.localStorage.has("hospitalKey")) {
       this.$router.push("/");
       return;

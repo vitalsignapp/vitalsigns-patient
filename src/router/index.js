@@ -37,7 +37,7 @@ Vue.mixin({
       panel: "step1",
       currentStep: 1,
       totalStep: 7,
-      version: "1.02",
+      version: "1.02.002",
 
       syncVersion: null,
     };
@@ -193,20 +193,16 @@ Vue.mixin({
     },
     loadVersion() {
       let refs = db.collection("version").doc("vitalsign-user");
-
-      this.syncVersion = refs.onSnapshot((result) => {
+      this.syncVersion = refs.get().then((result) => {
+        console.log(result.data().version);
         if (this.version != result.data().version) {
           window.location.reload(true);
         }
       });
     },
   },
-  mounted() {
-    this.loadVersion();
-  },
-  beforeDestroy() {
-    this.syncVersion();
-  },
+  mounted() {},
+  beforeDestroy() {},
 });
 
 export default function ( /* { store, ssrContext } */ ) {

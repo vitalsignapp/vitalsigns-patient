@@ -1,7 +1,7 @@
 <template>
   <div>
-    <q-toolbar class="bg-teal text-white shadow-1 font-h3">
-      <q-toolbar-title>
+    <q-toolbar class="bg-teal text-white shadow-1 font-h3 row">
+      <q-toolbar-title class="col">
         <q-btn dense flat class="cursor-pointer" @click="previousStep()" icon="arrow_back_ios"></q-btn>
         <span v-if="$route.name !='validation' ">
           <span class="color-white">{{ $t('step') }}</span>
