@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "./dist/pwa",
+    "public": "dist/pwa",
     "ignore": [
       "firebase.json",
       "**/.*",

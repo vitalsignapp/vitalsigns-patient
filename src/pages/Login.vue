@@ -43,7 +43,7 @@
       <div class="q-mt-xl q-mb-sm">
         <div align="center">
           <q-input
-            type="tel"
+            type="text"
             input-style="letter-spacing:2px;caret-color:#009688;"
             :input-class="
               username.length > 0
@@ -102,7 +102,7 @@ export default {
     login() {
       this.loadingShow();
       db.collection("patientData")
-        .where("HN", "==", this.username)
+        .where("username", "==", this.username)
         .where("hospitalKey", "==", this.$q.localStorage.getItem("hospitalKey"))
         .get()
         .then(async doc => {
@@ -121,6 +121,7 @@ export default {
             this.$q.localStorage.set("config", hospitalData.data());
             this.$q.localStorage.set("data", encryptData);
             this.$q.localStorage.set("enableBackBtn", true);
+
             this.$router.push("/vitalsign/schedule");
             this.loadingHide();
           } else {
