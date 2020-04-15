@@ -27,7 +27,7 @@
               :class=" $i18n.locale != 'en-us' ? 'backdrop' : null"
               @click="(isChangeLanguage = 'en'), changeLanguage('en')"
             >
-              <q-img src="../statics/pic/English.png"></q-img>
+              <q-img src="../statics/pic/english.png"></q-img>
             </q-btn>
           </div>
         </div>

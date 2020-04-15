@@ -16,7 +16,7 @@ const routes = [{
   },
   {
     path: '/vitalsign/oxygen',
-    component: () => import('pages/Oxygen.vue')
+    component: () => import('pages/oxygen.vue')
   },
   {
     path: '/vitalsign/bloodpressure',
