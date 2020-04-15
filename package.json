@@ -8,7 +8,10 @@
   "author": "tanin5462 <ber_zebub@hotmail.com>",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "build:pwa": "quasar build -m pwa",
+    "test": "echo \"No test specified\""
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
