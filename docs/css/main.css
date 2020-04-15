@@ -1,0 +1,137 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Sarabun:400,400i,500,700");
+/*---General Setting--- */
+body { color: #424242; font-family: "Sarabun", sans-serif; font-size: 18px; line-height: 28px; }
+
+h1, .h1, h2, .h2, h3, .h3 { margin-top: 20px; margin-bottom: 10px; }
+
+h1 { font-size: 36px; font-weight: bold; color: #424242; }
+
+h2 { margin-top: 0px; font-size: 30px; font-weight: bold; color: #009688; }
+
+h3 { font-size: 24px; line-height: 38px; font-weight: bold; color: #888888; }
+
+a, a:hover, a:active { color: #009688; }
+
+hr { border-color: #888888; }
+
+.a-button, .a-button:hover { text-decoration: none; }
+
+.container { max-width: 980px; }
+
+.clear { clear: both; }
+
+.text-center { text-align: center; }
+
+.nowrap { white-space: nowrap; }
+
+/*---Button--- */
+.btn-primary { color: #000000; background-color: #ffa726; border-color: #ffa726; font-size: 18px; font-weight: 500; box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.4); }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:active:focus, .btn-primary.active, .open .dropdown-toggle .btn-primary { color: #000000; background-color: #f29000; background-color-border-color: #e88a00; }
+.btn-primary:active, .btn-primary.active, .btn-primary:active:focus, .open .dropdown-toggle .btn-primary { background-image: none; }
+.btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active:focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active:focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active { background-color: #ffa726; border-color: #ffa726; }
+.btn-primary .badge { color: #ffa726; background-color: #000000; }
+
+.btn-primary:hover { box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2); }
+
+.btn-secondary { font-weight: 500; color: #009688; background-color: #fafafa; border-color: #009688; font-size: 18px; }
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary:active:focus, .btn-secondary.active, .open .dropdown-toggle .btn-secondary { color: #009688; background-color: #e1e1e1; background-color-border-color: #005951; }
+.btn-secondary:active, .btn-secondary.active, .btn-secondary:active:focus, .open .dropdown-toggle .btn-secondary { background-image: none; }
+.btn-secondary.disabled, .btn-secondary.disabled:hover, .btn-secondary.disabled:focus, .btn-secondary.disabled:active:focus, .btn-secondary.disabled:active, .btn-secondary.disabled.active, .btn-secondary[disabled], .btn-secondary[disabled]:hover, .btn-secondary[disabled]:focus, .btn-secondary[disabled]:active:focus, .btn-secondary[disabled]:active, .btn-secondary[disabled].active, fieldset[disabled] .btn-secondary, fieldset[disabled] .btn-secondary:hover, fieldset[disabled] .btn-secondary:focus, fieldset[disabled] .btn-secondary:active:focus, fieldset[disabled] .btn-secondary:active, fieldset[disabled] .btn-secondary.active { background-color: #fafafa; border-color: #009688; }
+.btn-secondary .badge { color: #fafafa; background-color: #009688; }
+
+/*---Section--- */
+.section { padding: 80px 0px; text-align: center; }
+
+.section-banner { background: #fafafa; padding-bottom: 0px; }
+.section-banner h3 { font-weight: 400; }
+.section-banner .img-responsive { margin: auto; }
+.section-banner .btn { width: 180px; margin: 20px 5px; }
+
+.section-how h2 { margin-bottom: 30px; }
+.section-how li { text-align: left; margin-bottom: 20px; }
+.section-how .how-to-step { margin-top: 10px; text-align: left; }
+.section-how .how-to-step .step-image img { margin: auto; }
+.section-how .how-to-step .number { font-size: 48px; font-weight: bold; color: #009688; float: left; width: 15%; height: 40px; padding-top: 5px; overflow: hidden; }
+.section-how .how-to-step .content { float: left; width: 85%; overflow: hidden; }
+.section-how .step-2, .section-how .step-4 { margin-top: 100px; }
+.section-how .btn { margin-top: 60px; }
+
+.section-contactus { background: #009688; color: #ffffff; }
+.section-contactus h2 { color: #ffffff; }
+.section-contactus .btn { margin-top: 10px; }
+.section-contactus img { margin: 30px auto; }
+
+.section-opensource { background: #00897B; color: #ffffff; }
+.section-opensource a { color: #ffffff; }
+.section-opensource h2 { color: #ffffff; margin-bottom: 20px; }
+.section-opensource .contributors { text-align: left; }
+.section-opensource .contributors img { margin: 40px auto; }
+.section-opensource .contributors h3 { color: #ffffff; }
+.section-opensource .contributors .name { background: #ffa726; color: #000000; padding: 0px 3px; }
+.section-opensource .contributors .company { font-style: italic; }
+.section-opensource .community { text-align: left; margin-top: 40px; }
+.section-opensource .community h3 { color: #ffffff; }
+
+.language-switch { float: right; padding-top: 10px; padding-right: 20px; }
+.language-switch .active { color: #424242; }
+
+/*--Footer-- */
+.footer { padding: 20px; background: #000000; color: #888888; }
+.footer a { color: #ffffff; }
+.footer .name { float: left; display: block; }
+.footer .version { float: right; display: block; }
+
+/*--Tutorial-- */
+.tutorial { margin-top: 80px; }
+.tutorial .title { text-align: center; }
+.tutorial .title h3 { margin-top: 0px; margin-bottom: 0px; font-weight: normal; font-size: 16px; color: #888888; }
+.tutorial .sub-title { margin-top: 50px; border-top: 1px solid #888888; border-bottom: 1px solid #888888; }
+.tutorial .sub-title h2 { color: #000000; margin-top: 30px; margin-bottom: 30px; }
+.tutorial h3 { margin-top: 30px; color: #424242; }
+.tutorial a:hover h3 { color: #009688; }
+.tutorial li { font-family: "Sarabun", sans-serif; margin-left: 2%; line-height: 1.8; }
+.tutorial img { margin-top: 10px; margin-bottom: 20px; }
+.tutorial .img-large { max-width: 480px; }
+.tutorial .img-small { max-width: 320px; }
+.tutorial .icon { width: 5px; margin: 0; padding: 0; margin-left: 5px; }
+.tutorial hr { margin-top: 40px; margin-bottom: 30px; }
+.tutorial footer { font-size: 20px; line-height: 30px; margin-top: 80px; margin-bottom: 0px; padding: 80px 0px; text-align: center; color: #ffffff; background: #00897B; }
+.tutorial .tutorial-patient { margin-top: 30px; text-align: center; }
+.tutorial .tutorial-patient .img-responsive { margin: 20px auto; }
+
+/*-- Fancy FAB -- */
+button.back-to-top { margin: 0 !important; padding: 0 !important; background: #FFFFFF; height: 0px; width: 0px; overflow: hidden; border-radius: 50px; -webkit-border-radius: 50px; -moz-border-radius: 50px; color: transparent; clear: both; visibility: hidden; position: fixed; cursor: pointer; display: block; border: none; right: 50px; bottom: 75px; font-size: 0px; outline: 0 !important; z-index: 99; transition: all 0.3s ease-in-out; }
+
+button.back-to-top:hover, button.back-to-top:active, button.back-to-top:focus { outline: 0 !important; }
+
+button.back-to-top::before { content: ""; font-family: "FontAwesome"; display: block; vertical-align: middle; margin: -5px 0 auto; }
+
+button.back-to-top.show { display: block; background: #fff; color: #009688; font-size: 25px; right: 25px; bottom: 50px; height: 50px; width: 50px; visibility: visible; box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25); -webkit-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25); -moz-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25); }
+
+button.back-to-top.show:active { box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25); -webkit-box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25); -moz-box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25); }
+
+/* Only Extra Small devices (XS) */
+@media only screen and (max-width: 768px) { body { font-size: 16px; }
+  h1 { font-size: 26px; line-height: 36px; }
+  h2 { font-size: 24px; margin-top: 0px; }
+  h3 { font-size: 18px; line-height: 30px; }
+  .language-switch { display: none; }
+  .section { padding: 40px 0px; }
+  .section-banner { padding-bottom: 0px; }
+  .section-banner .logo { width: 280px; }
+  .section-banner .btn { margin-top: 10px; margin-bottom: 10px; }
+  .section-how .how-to-step .number { font-size: 40px; width: 10%; }
+  .section-how .how-to-step .content { width: 90%; }
+  .section-how .how-to-step .step-image { text-align: center; }
+  .section-how .step-2, .section-how .step-3, .section-how .step-4 { margin-top: 20px; }
+  .section-how .btn { margin-top: 30px; }
+  .section-opensource h3 { text-align: center; }
+  .section-opensource .contributors img { margin: 20px auto; }
+  .tutorial { margin-top: 40px; }
+  .tutorial .title h1 { margin-top: 0px; margin-bottom: 0px; }
+  .tutorial h2 { font-size: 20px; }
+  .tutorial .tutorial-patient h2 { font-size: 24px; }
+  .tutorial .logo { width: 280px; }
+  .tutorial .img-large { max-width: 100%; margin-left: -20px; }
+  .tutorial .img-small { max-width: 250px; margin-left: -20px; } }
